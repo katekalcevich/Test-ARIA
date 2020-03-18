@@ -1,0 +1,359 @@
+<html>
+  <head>
+    <title>Test ARIA</title>
+    <style>
+      /* make demo buttons easier to see */
+      body, input, button {
+        font-family: arial, sans-serif;
+        font-size: 1em;
+      }
+
+      /* modal overlay */
+      .modal-overlay {
+        background:rgba(0,0,0,.8);
+        height: 100%;
+        left: 0;
+        display: flex;
+        overflow: auto;
+        padding: 1.5em;
+        position: fixed;
+        top: 0;
+        transition: opacity .2s;
+        width: 100%;
+        z-index: -1;
+      }
+
+      .modal-overlay[aria-hidden="true"] {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .modal-overlay[aria-hidden="false"] {
+        opacity: 1;
+        visibility: visible;
+        z-index: 2;
+      }
+
+      /* modal content area */
+      .modal-content {
+        background: #ebebeb;
+        margin: auto;
+        max-width: 400px;
+        overflow: auto;
+        overflow-x: hidden;
+        padding: 1.5em;
+        position: relative;
+        width: 100%;
+      }
+
+      /* close modal button */
+      .btn-close {
+        background: none;
+        border: none;
+        cursor: pointer;
+        position: absolute;
+        font-size: 2em;
+        right: .25em;
+        top: .25em;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div id="page">
+    <h1>Test ARIA</h1>
+    
+    <hr>
+    <!-- adapted from 
+
+    https://www.w3.org/TR/wai-aria-practices/examples/accordion/accordion.html 
+    
+    Note that aria-expanded is on the accordion heading/button, 
+    not the content panel. Putting it on the panel is a common error. 
+    -->
+    <h2>Accordion</h2>
+    
+    <div class="accordion">
+      <h3>
+        <button type="button" aria-expanded="false" aria-controls="fruit">
+          Fruit
+        </button>
+      </h3>
+      <div id="fruit" style="display: none">
+        <ul>
+          <li>Blueberries</li>
+          <li>Strawberries</li>
+          <li>Bananas</li>
+        </ul>
+      </div>
+
+      <h3>
+        <button type="button" aria-expanded="false" aria-controls="veg">
+          Vegetables
+        </button>
+      </h3>
+      
+      <div id="veg" style="display: none">
+        <ul>
+          <li>Carrots</li>
+          <li>Zucchini</li>
+          <li>Potatoes</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      var accordion = document.querySelectorAll(".accordion button");
+      
+      for (i = 0; i < accordion.length; i++) {
+        accordion[i].addEventListener("click", showContent);
+      }
+      
+      function showContent() {
+        var target = event.target;
+        
+        // check if the current accordion button is expanded
+        var isExpanded = target.getAttribute("aria-expanded") == "true";
+
+        if (!isExpanded) {
+          target.setAttribute("aria-expanded", "true");
+          target.setAttribute("style", "background: yellow");
+          // hide the accordion content
+          document.getElementById(
+            target.getAttribute("aria-controls")
+          ).style.display = "block";
+        }
+        else {
+          target.setAttribute("aria-expanded", "false");
+          target.removeAttribute("style");
+          // hide the accordion content
+          document.getElementById(
+            target.getAttribute("aria-controls")
+          ).style.display = "none";
+        }
+        
+      }  
+    </script>
+    
+    <hr>
+    <!-- adapted from 
+    
+    https://www.deque.com/blog/a11y-support-series-part-1-aria-tab-panel-accessibility/
+
+    Modified from WAI-ARIA examples to allow users to tab between tabs as some keyboard users would expect. In the ARIA specs, you should only be able to navigate by arrow keys. 
+
+    I've also set the focus to the selected tab panel so that a screen reader goes right to selected tab's panel content. 
+
+    Divs aren't normally focusable, but adding tabindex="0" with JavaScript will move the focus to the panel content. 
+    -->
+    <h2>Tabs</h2>
+ 
+    <div class="tabs">
+      
+      <div role="tablist">
+        <button type="button" role="tab" aria-selected="true" 
+            id="apples-tab" aria-controls="apples-panel" 
+            style="background: yellow">
+          Apples
+        </button>
+        <button type="button" role="tab" aria-selected="false" 
+            id="bananas-tab" aria-controls="bananas-panel">
+          Bananas
+        </button>
+        <button type="button" role="tab" aria-selected="false" 
+            id="peaches-tab" aria-controls="peaches-panel">
+          Peaches
+        </button>
+      </div>
+      
+      <div id="apples-panel" role="tabpanel" 
+           aria-labelledby="apples-tab">
+        <h3>Apples</h3>
+        <p>Apples are amazing!</p>
+        <a href="apple.html">How appealing</a>
+      </div>
+      <div id="bananas-panel" role="tabpanel" 
+           aria-labelledby="bananas-tab" style="display: none">
+        <h3>Bananas</h3>
+        <p>Don't slip on your banana peel!</p>
+        <a href="banana.html">Peel me</a>
+      </div>
+      <div id="peaches-panel" role="tabpanel" 
+           aria-labelledby="peaches-tab" style="display: none">
+        <h3>Peaches</h3>
+        <p>Peaches keep peaching!</p>
+        <a href="peach.html">Get peachy</a>
+      </div>
+      
+    </div><!-- .tabs -->
+    
+    <script>
+      var tabs = document.querySelectorAll("[role=tab]");
+      
+      for (i = 0; i < tabs.length; i++) {
+        tabs[i].addEventListener("click", showTabPanel);
+      }
+      
+      function showTabPanel() { 
+        var target = event.target;
+        
+        for (i = 0; i < tabs.length; i++) {
+          tabs[i].setAttribute("aria-selected", "false");
+          tabs[i].setAttribute("style", "background: default");
+        }
+        target.setAttribute("aria-selected", "true");
+        target.setAttribute("style", "background: yellow");
+
+        // find panel to open through the aria-controls of the clicked tab
+        var tabPanelToOpen = document.getElementById(
+          target.getAttribute("aria-controls")
+        );
+        var tabPanels = document.querySelectorAll("[role=tabpanel]"); 
+        for (i = 0; i < tabPanels.length; i++) {
+            tabPanels[i].style.display = "none";
+            tabPanels[i].removeAttribute("tabindex");
+        }
+        
+        // open panel and set focus to content so user bypasses other tabs
+        tabPanelToOpen.style.display = "block";
+        tabPanelToOpen.setAttribute("tabindex", 0);
+        tabPanelToOpen.focus();
+      }
+      
+      // add ability to navigate tabs using arrow keys
+      var tabList = document.querySelector("[role=tablist]");
+
+      // add listener to entire tablist (instead of looping through each tab)
+      tabList.addEventListener("keydown", e => {
+        
+        if (e.keyCode === 39 || e.keyCode === 37) {
+          var selected = document.activeElement;
+          
+          // move right on right arrow
+          if (e.keyCode === 39) {
+            if (selected.nextElementSibling) {
+              selected.nextElementSibling.click();
+              selected.nextElementSibling.focus();
+            }
+          // move left on left arrow
+          } else if (e.keyCode === 37) {
+            if (selected.previousElementSibling) {
+              selected.previousElementSibling.click();
+              selected.previousElementSibling.focus();
+            }
+          }
+          
+        }
+        
+      });
+    </script>
+    
+    <hr>
+    <!-- adapted from 
+
+    http://scottaohara.github.io/accessible_modal_window/ 
+
+    Styles included in the <head> because you can't demo a modal without style.
+
+    You need to move focus into the modal when it opens and keep it there until it is closed.
+
+    Modals need to close using the escape key or by clicking/pressing enter/pressing spacebar on the close button.
+    -->
+    <h2>Modal dialog</h2>
+
+    <button type="button" id="modal-open">Sign in</button>
+    </div><!-- #page -->
+    
+   <div class="modal-overlay" id="modal-window"
+      aria-hidden="true" role="dialog" aria-labelledby="modal_title">
+
+      <div class="modal-content" id="modal-holder" role="document">
+
+          <h3 id="modal_title">Access your account</h3>
+          <form>
+            <p>
+              <label for="user">Username:</label>
+              <input type="text" id="user" />
+            </p>
+            <p>
+              <label for="pass">Password:</label>
+              <input type="text" id="pass" />
+            </p>
+            <button type="submit">Sign in</button>
+          </form>
+
+        <button type="button" class="btn-close" id="modal-close" aria-label="close">
+          &times;
+        </button>
+
+      </div><!-- .modal-content -->
+
+    </div><!-- .modal-overlay -->
+    
+    <script>
+    // place modal window as the first child of the #page node
+    var m = document.getElementById("modal-window"),
+        p = document.getElementById("page");
+    p.parentNode.insertBefore(m, p);
+
+    (function() {
+
+      var mOverlay = document.getElementById("modal-window"),
+          mOpen = document.getElementById("modal-open"),
+          mClose = document.getElementById("modal-close"),
+          modal = document.getElementById("modal-holder"),
+          allNodes = document.querySelectorAll("*"),
+          modalOpen = false,
+          lastFocus,
+          i;
+
+      // open the modal
+      function modalShow () {
+        lastFocus = document.activeElement;
+        mOverlay.setAttribute("aria-hidden", "false");
+        modalOpen = true;
+        modal.setAttribute("tabindex", "0");
+        modal.focus();
+      }
+
+      // binds to both the button click and the escape key to close the modal
+      function modalClose ( event ) {
+        if (modalOpen && ( !event.keyCode || event.keyCode === 27 ) ) {
+          mOverlay.setAttribute("aria-hidden", "true");
+          modal.setAttribute("tabindex", "-1");
+          modalOpen = false;
+          lastFocus.focus();
+        }
+      }
+
+      // restrict focus to the modal window when it's open
+      function focusRestrict ( event ) {
+        if ( modalOpen && !modal.contains( event.target ) ) {
+          event.stopPropagation();
+          modal.focus();
+        }
+      }
+
+      // close modal window by clicking on the overlay
+      mOverlay.addEventListener("click", function( e ) {
+        if (e.target == modal.parentNode) {
+           modalClose( e );
+         }
+      }, false);
+
+      // open modal
+      mOpen.addEventListener("click", modalShow);
+
+      // close modal
+      mClose.addEventListener("click", modalClose);
+
+      // restrict tab focus to elements inside modal window
+      for (i = 0; i < allNodes.length; i++) {
+        allNodes.item(i).addEventListener("focus", focusRestrict);
+      }
+
+    })();
+    </script>
+
+  </body>
+</html>
