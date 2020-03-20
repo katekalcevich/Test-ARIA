@@ -251,7 +251,13 @@
     <hr>
     <!-- adapted from 
 
-    http://scottaohara.github.io/accessible_modal_window/ 
+    https://www.smashingmagazine.com/2014/09/making-modal-windows-better-for-everyone/
+
+    Demo links:
+
+    https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/6793fff0-3ca1-4c05-b383-81aa8c9163e8/accessible.html
+
+    https://codepen.io/scottohara/pen/lIdfv
 
     Styles included in the <head> because you can't demo a modal without style.
 
@@ -347,6 +353,9 @@
       // close modal
       mClose.addEventListener("click", modalClose);
 
+      // close modal by keydown
+      document.addEventListener("keydown", modalClose);
+      
       // restrict tab focus to elements inside modal window
       for (i = 0; i < allNodes.length; i++) {
         allNodes.item(i).addEventListener("focus", focusRestrict);
