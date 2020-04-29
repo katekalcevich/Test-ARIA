@@ -66,3 +66,11 @@ The expected **screen reader** interaction for modals is:
 - the modal container has a role of dialog (which screen readers will announce)
 - the modal container has aria-modal set to true
 - the modal has either an aria-labelledby property or an aria-label
+
+### Dialogs, modal dialogs and alert dialogs
+They are all interface elements that open on top of a web page. 
+- A dialog requests optional input from a user - they can be cancelled. 
+- Modal dialogs restrict the interface so that you can only interact with that dialog. Users must interact with the modal dialog in order to continue their task. 
+- An alert dialog is used when an alert, error, or warning occurs that requires user action. 
+
+The a modal dialog (often referred to as a modal only) and an alert dialog have different roles. A modal will also dim the web page it opens on top of, but an alert dialog won't.
