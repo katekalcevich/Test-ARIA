@@ -49,3 +49,20 @@ The expected **screen reader** interaction for tabs is:
 - when a tab is closed, it's button has aria-expanded="false"
 - the content for each tab is inside an element (like a div) with role="tabpanel" and aria-labelledby with the ID of the tab that opens it
 - if the tabs are vertical, the element with role="tablist" also has aria-orientation="vertical" (horizontal is the default)
+
+## Modals
+This code is adapted from [How To Make Modal Windows Better For Everyone](https://www.smashingmagazine.com/2014/09/making-modal-windows-better-for-everyone/). I've modified it by simplifying the CSS.
+
+[Shepherd](https://shepherdjs.dev/) is a JavaScript library that provides an accessible guided tour using modals.
+
+The expected **keyboard** interaction for modals is:
+- when the modal opens, focus moves to an element inside the modal
+- you can tab through interactive elements inside the modal, but you can't tab to anything outside the modal
+- you can close the modal using the escape key
+- you can close the modal by focusing on a close button and pressing the space bar or enter key
+- when you close the modal, focus returns to the element that invoked the modal unless it no longer exists
+
+The expected **screen reader** interaction for modals is:
+- the modal container has a role of dialog (which screen readers will announce)
+- the modal container has aria-modal set to true
+- the modal has either an aria-labelledby property or an aria-label
