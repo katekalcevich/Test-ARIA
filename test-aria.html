@@ -247,9 +247,12 @@
     <h2>Modal dialog</h2>
 
     <button type="button" id="modal-open">Sign in</button>
+    <br><br>  
+    <button onclick="openDialog()">Regular dialog</button>
+
     </div><!-- #page -->
     
-   <div class="modal-overlay" id="modal-window"
+   <div class="modal-overlay" id="modal-window" aria-modal="true"
       aria-hidden="true" role="dialog" aria-labelledby="modal_title">
 
       <div class="modal-content" id="modal-holder" role="document">
@@ -294,11 +297,11 @@
 
       // open the modal
       function modalShow () {
-        lastFocus = document.activeElement;
+        lastFocus = document.activeElement; // save button used to open modal
         mOverlay.setAttribute("aria-hidden", "false");
         modalOpen = true;
         modal.setAttribute("tabindex", "0");
-        modal.focus();
+        modal.focus(); // set focus on the modal
       }
 
       // binds to both the button click and the escape key to close the modal
@@ -307,7 +310,7 @@
           mOverlay.setAttribute("aria-hidden", "true");
           modal.setAttribute("tabindex", "-1");
           modalOpen = false;
-          lastFocus.focus();
+          lastFocus.focus(); // return focus to the button used to open modal
         }
       }
 
@@ -341,6 +344,11 @@
       }
 
     })();
+      
+    // non-modal dialog for comparison
+    function openDialog() {
+      var person = prompt("Please enter your name:");
+    }
     </script>
 
   </body>
