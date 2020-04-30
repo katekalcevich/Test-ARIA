@@ -7,6 +7,10 @@
         font-family: arial, sans-serif;
         font-size: 1em;
       }
+      
+      label {
+        font-weight: bold;
+      }
 
       /* modal overlay */
       .modal-overlay {
@@ -232,6 +236,68 @@
         }
         
       });
+    </script>
+      
+    <hr>
+    <!-- adapted from
+    https://developer.paciellogroup.com/blog/2016/01/simple-inline-error-message-pattern/
+    https://www.w3.org/WAI/tutorials/forms/notifications/
+    https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA19
+    -->
+    <h2>Notifications</h2>
+    <div id="status" role="status" aria-live="polite"></div>
+    <div id="alert" role="alert" aria-atomic="true"></div>
+      
+    <p>
+      <label for="name">Name</label> 
+      <span>First and last</span>
+      <br><input type="text" id="name" autocomplete="name">
+      <span id="error-name"></span>
+    </p>
+      
+    <p>
+      <label for="email">Email</label> 
+      <span>(optional)</span>
+      <br><input type="text" id="email" autocomplete="email">
+      <span id="error-email"></span>
+    </p>
+      
+    <p>
+      <label id="label1" for="phone" aria-describedby="hint">Phone</label>
+      <br><span id="hint">Format: 999-999-9999</span>
+      <br><input type="text" id="phone" aria-required="true">
+      <span id="error-phone"></span>
+    </p>
+ 
+    <p>
+      <button type="submit" id="form-submit">submit</button> 
+      <button type="button" id="form-clear">cancel</button>
+    </p>
+    
+    <script>
+      function showError() {
+        var status = document.getElementById("status"),
+            errName = document.getElementById("error-name"),
+            errPhone = document.getElementById("error-phone"),
+            name = document.getElementById("name"),
+            phone = document.getElementById("phone");
+        
+        status.innerHTML = "There are two errors on this page. Please fix them and resubmit the form.";
+        errName.innerHTML = "&nbsp;<b>Error</b>: Name is required";
+        errPhone.innerHTML = "&nbsp;<b>Error</b>: Phone is required";
+        name.setAttribute("aria-invalid", "true");
+        phone.setAttribute("aria-invalid", "true");
+        name.focus();
+      }
+      
+      function showAlert() {
+        
+      }
+      
+      var formSubmit = document.getElementById("form-submit"),
+          formCancel = document.getElementById("form-cancel");
+      formSubmit.addEventListener("click", showError, false);
+      formCancel.addEventListener("click", showAlert);
     </script>
     
     <hr>
