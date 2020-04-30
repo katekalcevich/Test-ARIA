@@ -1,9 +1,7 @@
 # Testing ARIA
-Demo of accessible components. 
+ Accessible components using ARIA. 
 
-test-aria.html has an accessible accordion, tabs, error notifation and modal component created with HTML and JavaScript. A bare minimum of CSS is used to show functionality - highlighting selected elements and to overlay the modal on screen.
-
-The code is commented, but I've also created notes below on expected behaviour and ARIA usage.
+The file [test-aria.html](https://github.com/katekalcevich/Test-ARIA/blob/master/test-aria.html) has code for an accessible accordion, tabs, error notifation and modal component created with HTML and JavaScript. A bare minimum of CSS is used to show functionality. The code is commented, but I've also created notes below on expected behaviour and ARIA usage.
 
 ## Accordions
 This code is adapted from [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/examples/accordion/accordion.html). I modified it by:
