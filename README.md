@@ -51,24 +51,22 @@ The expected **screen reader** interaction for tabs is:
 ## Notifications
 This code is adapted from [Simple inline error message pattern](https://developer.paciellogroup.com/blog/2016/01/simple-inline-error-message-pattern/), [User Notifications](https://www.w3.org/WAI/tutorials/forms/notifications/) and [Using ARIA role=alert or Live Regions to Identify Errors](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA19). I've combined a variety of techniques into a single example.
 
-### aria-live polite and assertive vs. alerts
+### aria-live="polite" or assertive vs. alerts
 When you use aria-live="polite" screen readers will announce updates at the next graceful opportunity, such as at the end of a sentence. An example use case would be a success message.
 
-When you sue aria-live="assertive" screen readers will announce updates immediately. The assertive value should only be used if the interruption is critical because users need to know something immediately. 
+When you use aria-live="assertive" screen readers will announce updates immediately. The assertive value should only be used if the interruption is critical because users need to know something immediately. 
 
-Role="alert" is used to define for important and time-sensitive messages. 
-
-W3C considers role="alert" equivalent to aria-live="assertive".
+Role="alert" is used to define for important and time sensitive messages. Using role="alert" is equivalent to using aria-live="assertive" and aria-atomic="true".
 
 The expected **keyboard** interaction for notifications is:
-- not to received focus 
+- not to receive focus 
 
-If user interaction is required, use a modal or another technique.
+If user interaction is required, use a modal or another technique. You can move the focus to the error, but not the notification itself.
 
 The expected **screen reader** interaction for notifications is:
 - when an alert with role="alert" or aria-live="assertive" is triggered, a screen reader will say the alert right away 
 - when an alert is triggered with aria-live="polite", a screen reader will say the alert when it's done reading it's current focus
-- when a form is resubmitted and there are still errors, screen readers will speak remaining error messages if aria-atomic is set to true
+- when a form is resubmitted and there are still errors, screen readers will speak remaining error messages if aria-atomic is set to true on an aria-live element
 
 I'm not a fan of toasts. I don't think they are the best option for notifications from a usability or accessibility perspective. If you must use toast, read [Adrian Roselli's strategies for toasts](https://adrianroselli.com/2020/01/defining-toast-messages.html#Strategies).
 
@@ -91,10 +89,7 @@ The expected **screen reader** interaction for modals is:
 
 Some screen readers will read the modal twice. I'm not aware of any way to avoid that.
 
-### Dialogs, modal dialogs and alert dialogs
-They are all interface elements that open on top of a web page. 
-- A dialog requests optional input from a user - they can be cancelled. 
-- Modal dialogs restrict the interface so that you can only interact with that dialog. Users must interact with the modal dialog in order to continue their task. 
-- An alert dialog is used when an alert, error, or warning occurs that requires user action. 
+### Modal vs. alert dialogs
+A dialog is a window overlaid on top of a web page. Users can't interact with content outside the dialog window. An alertdialog interrupts the user's workflow with an important message that requires a response from the user. For example, confirming that a user wants to cancel their task and lose all information that they entered.
 
-The a modal dialog (often referred to as a modal only) and an alert dialog have different roles. A modal will also dim the web page it opens on top of, but an alert dialog won't.
+The alertdialog role lets assistive technologies and browsers give alert dialogs special treatment such as playing a system alert sound.
