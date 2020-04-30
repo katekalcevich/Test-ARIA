@@ -130,10 +130,12 @@
     
     <hr>
     <!-- adapted from 
-    
     https://www.deque.com/blog/a11y-support-series-part-1-aria-tab-panel-accessibility/
+
     Modified from WAI-ARIA examples to allow users to tab between tabs as some keyboard users would expect. In the ARIA specs, you should only be able to navigate by arrow keys. 
+
     I've also set the focus to the selected tab panel so that a screen reader goes right to selected tab's panel content. 
+
     Divs aren't normally focusable, but adding tabindex="0" with JavaScript will move the focus to the panel content. 
     -->
     <h2>Tabs</h2>
@@ -243,38 +245,57 @@
     https://developer.paciellogroup.com/blog/2016/01/simple-inline-error-message-pattern/
     https://www.w3.org/WAI/tutorials/forms/notifications/
     https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA19
+
+    Notifications should be close enough to the users focus so that someone using magnification will notice them. If not, move the focus.
+
+    If a form has multiple errors, it's helpful to notify the user how many errors there are, but it's not required for accessibility compliance.
+
+    It's best practice to set the focus on the first error, to help users fix errors faster.
     -->
     <h2>Notifications</h2>
     <div id="status" role="status" aria-live="polite"></div>
-    <div id="alert" role="alert" aria-atomic="true"></div>
       
     <p>
       <label for="name">Name</label> 
-      <span>First and last</span>
-      <br><input type="text" id="name" autocomplete="name">
+      <span id="hint-name">First and last</span>
+      <br><input type="text" id="name" 
+        autocomplete="name" 
+        aria-required="true"
+        aria-describedby="hint-name">
       <span id="error-name"></span>
     </p>
       
     <p>
       <label for="email">Email</label> 
       <span>(optional)</span>
-      <br><input type="text" id="email" autocomplete="email">
+      <br><input type="text" id="email" 
+        autocomplete="email">
       <span id="error-email"></span>
     </p>
       
     <p>
-      <label id="label1" for="phone" aria-describedby="hint">Phone</label>
-      <br><span id="hint">Format: 999-999-9999</span>
-      <br><input type="text" id="phone" aria-required="true">
+      <label id="label1" for="phone">Phone</label>
+      <br><span id="hint-phone">Format: 999-999-9999</span>
+      <br><input type="text" id="phone" 
+        autocomplete="phone" 
+        aria-required="true"
+        aria-describedby="hint-phone">
       <span id="error-phone"></span>
     </p>
  
     <p>
       <button type="submit" id="form-submit">submit</button> 
-      <button type="button" id="form-clear">cancel</button>
+      <button type="button" id="form-cancel">cancel</button>
     </p>
+      
+    <div id="alert" role="alert"></div>
     
     <script>
+      var formSubmit = document.getElementById("form-submit"),
+          formCancel = document.getElementById("form-cancel");
+      formSubmit.addEventListener("click", showError, false);
+      formCancel.addEventListener("click", showAlert);
+      
       function showError() {
         var status = document.getElementById("status"),
             errName = document.getElementById("error-name"),
@@ -291,23 +312,22 @@
       }
       
       function showAlert() {
-        
+        var alert = document.getElementById("alert");
+        alert.innerHTML = "Your form submission was cancelled."; 
       }
-      
-      var formSubmit = document.getElementById("form-submit"),
-          formCancel = document.getElementById("form-cancel");
-      formSubmit.addEventListener("click", showError, false);
-      formCancel.addEventListener("click", showAlert);
     </script>
     
     <hr>
     <!-- adapted from 
     https://www.smashingmagazine.com/2014/09/making-modal-windows-better-for-everyone/
+
     Demo links:
     https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/6793fff0-3ca1-4c05-b383-81aa8c9163e8/accessible.html
     https://codepen.io/scottohara/pen/lIdfv
+
     Styles included in the <head> because you can't demo a modal without style.
     You need to move focus into the modal when it opens and keep it there until it is closed.
+
     Modals need to close using the escape key or by clicking/pressing enter/pressing spacebar on the close button.
     -->
     <h2>Modal dialog</h2>
