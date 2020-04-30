@@ -1,9 +1,9 @@
-# Test-ARIA
+# Testing ARIA
 Demo of accessible components. 
 
-test-aria.html has an accessible accordion, tabs and modal component created with HTML and vanilla JavaScript. A bare minimum of CSS is used to show functionality - highlighting selected elements and to overlay the modal on screen.
+test-aria.html has an accessible accordion, tabs, error notifation and modal component created with HTML and JavaScript. A bare minimum of CSS is used to show functionality - highlighting selected elements and to overlay the modal on screen.
 
-The code is commented, but I've also created notes below on expected behaviour and WAI-ARIA usage.
+The code is commented, but I've also created notes below on expected behaviour and ARIA usage.
 
 ## Accordions
 This code is adapted from [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/examples/accordion/accordion.html). I modified it by:
@@ -49,6 +49,26 @@ The expected **screen reader** interaction for tabs is:
 - when a tab is closed, it's button has aria-expanded="false"
 - the content for each tab is inside an element (like a div) with role="tabpanel" and aria-labelledby with the ID of the tab that opens it
 - if the tabs are vertical, the element with role="tablist" also has aria-orientation="vertical" (horizontal is the default)
+
+## Notifications
+This code is adapted from [Simple inline error message pattern](https://developer.paciellogroup.com/blog/2016/01/simple-inline-error-message-pattern/), [User Notifications](https://www.w3.org/WAI/tutorials/forms/notifications/) and [Using ARIA role=alert or Live Regions to Identify Errors](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA19). I've combined a variety of techniques into a single example.
+
+### aria-live polite and assertive vs. alerts
+When you use aria-live="polite" screen readers will announce updates at the next graceful opportunity, such as at the end of a sentence. An example use case would be a success message.
+
+When you sue aria-live="assertive" screen readers will announce updates immediately. The assertive value should only be used if the interruption is critical because users need to know something immediately. 
+
+Role="alert" is used to define for important and time-sensitive messages. 
+
+W3C considers role="alert" equivalent to aria-live="assertive".
+
+The expected **keyboard** interaction for notifications is:
+**Don't** set the focus on a notification. If user interaction is required use a modal or another technique.
+
+The expected **screen reader** interaction for notifications is:
+- aria-atomic is set to true so that screen readers read error messages on every invalid form submission not just the first one
+
+I'm not a fan of toasts. I don't think they are the best option for notifications from a usability or accessibility perspective. If you must use toast, read [Adrian Roselli's strategies for toasts](https://adrianroselli.com/2020/01/defining-toast-messages.html#Strategies).
 
 ## Modals
 This code is adapted from [How To Make Modal Windows Better For Everyone](https://www.smashingmagazine.com/2014/09/making-modal-windows-better-for-everyone/). I've modified it by simplifying the CSS.
