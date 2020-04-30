@@ -63,10 +63,14 @@ Role="alert" is used to define for important and time-sensitive messages.
 W3C considers role="alert" equivalent to aria-live="assertive".
 
 The expected **keyboard** interaction for notifications is:
-**Don't** set the focus on a notification. If user interaction is required use a modal or another technique.
+- not to received focus 
+
+If user interaction is required, use a modal or another technique.
 
 The expected **screen reader** interaction for notifications is:
-- aria-atomic is set to true so that screen readers read error messages on every invalid form submission not just the first one
+- when an alert with role="alert" or aria-live="assertive" is triggered, a screen reader will say the alert right away 
+- when an alert is triggered with aria-live="polite", a screen reader will say the alert when it's done reading it's current focus
+- when a form is resubmitted and there are still errors, screen readers will speak remaining error messages if aria-atomic is set to true
 
 I'm not a fan of toasts. I don't think they are the best option for notifications from a usability or accessibility perspective. If you must use toast, read [Adrian Roselli's strategies for toasts](https://adrianroselli.com/2020/01/defining-toast-messages.html#Strategies).
 
@@ -86,6 +90,8 @@ The expected **screen reader** interaction for modals is:
 - the modal container has a role of dialog (which screen readers will announce)
 - the modal container has aria-modal set to true
 - the modal has either an aria-labelledby property or an aria-label
+
+Some screen readers will read the modal twice. I'm not aware of any way to avoid that.
 
 ### Dialogs, modal dialogs and alert dialogs
 They are all interface elements that open on top of a web page. 
