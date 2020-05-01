@@ -261,7 +261,7 @@
       <br><input type="text" id="name" 
         autocomplete="name" 
         aria-required="true"
-        aria-describedby="hint-name">
+        aria-describedby="hint-name error-name">
       <span id="error-name"></span>
     </p>
       
@@ -280,7 +280,7 @@
       <br><input type="text" id="phone" 
         autocomplete="phone" 
         aria-required="true"
-        aria-describedby="hint-phone">
+        aria-describedby="hint-phone error-phone">
       <span id="error-phone"></span>
     </p>
  
@@ -305,8 +305,8 @@
             phone = document.getElementById("phone");
         
         status.innerHTML = "There are two errors on this page. Please fix them and resubmit the form.";
-        errName.innerHTML = "&nbsp;<b>Error</b>: Name is required";
-        errPhone.innerHTML = "&nbsp;<b>Error</b>: Phone is required";
+        errName.innerHTML = "&nbsp;<strong>Error</strong>: Name is required";
+        errPhone.innerHTML = "&nbsp;<strong>Error</strong>: Phone is required";
         name.setAttribute("aria-invalid", "true");
         phone.setAttribute("aria-invalid", "true");
         name.focus();
