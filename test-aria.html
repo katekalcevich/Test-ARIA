@@ -333,9 +333,12 @@
     -->
     <h2>Modal dialog</h2>
 
-    <button type="button" id="modal-open">Sign in</button>
-    <br><br>  
-    <button onclick="openDialog()">Regular dialog</button>
+    <p>
+      <button type="button" id="modal-open">Sign in</button>
+    </p>
+    <p>
+      <button onclick="openDialog()">Regular dialog</button>
+    </p>
 
     </div><!-- #page -->
     
@@ -377,25 +380,32 @@
           mOpen = document.getElementById("modal-open"),
           mClose = document.getElementById("modal-close"),
           modal = document.getElementById("modal-holder"),
+          firstField = document.getElementById("user"),
           allNodes = document.querySelectorAll("*"),
           modalOpen = false,
-          lastFocus,
-          i;
+          lastFocus;
 
+      // open modal
+      mOpen.addEventListener("click", modalShow);
+
+      // close modal
+      mClose.addEventListener("click", modalClose);
+
+      // close modal by keydown
+      document.addEventListener("keydown", modalClose);
+      
       // open the modal
-      function modalShow () {
+      function modalShow (focusItem) {
         lastFocus = document.activeElement; // save button used to open modal
         mOverlay.setAttribute("aria-hidden", "false");
         modalOpen = true;
-        modal.setAttribute("tabindex", "0");
-        modal.focus(); // set focus on the modal
+        firstField.focus(); // set focus on the first field in the modal    
       }
 
       // binds to both the button click and the escape key to close the modal
       function modalClose ( event ) {
         if (modalOpen && ( !event.keyCode || event.keyCode === 27 ) ) {
           mOverlay.setAttribute("aria-hidden", "true");
-          modal.setAttribute("tabindex", "-1");
           modalOpen = false;
           lastFocus.focus(); // return focus to the button used to open modal
         }
@@ -408,6 +418,11 @@
           modal.focus();
         }
       }
+      
+      // restrict tab focus to elements inside modal window
+      for (i = 0; i < allNodes.length; i++) {
+        allNodes.item(i).addEventListener("focus", focusRestrict);
+      }
 
       // close modal window by clicking on the overlay
       mOverlay.addEventListener("click", function( e ) {
@@ -416,22 +431,10 @@
          }
       }, false);
 
-      // open modal
-      mOpen.addEventListener("click", modalShow);
-
-      // close modal
-      mClose.addEventListener("click", modalClose);
-
-      // close modal by keydown
-      document.addEventListener("keydown", modalClose);
-      
-      // restrict tab focus to elements inside modal window
-      for (i = 0; i < allNodes.length; i++) {
-        allNodes.item(i).addEventListener("focus", focusRestrict);
-      }
-
     })();
-      
+    </script>
+    
+    <script>
     // non-modal dialog for comparison
     function openDialog() {
       var person = prompt("Please enter your name:");
