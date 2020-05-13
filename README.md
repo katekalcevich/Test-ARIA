@@ -3,6 +3,34 @@
 
 The file [test-aria.html](https://github.com/katekalcevich/Test-ARIA/blob/master/test-aria.html) has code for accessible accordions, tabs, notifations and modals written in HTML and JavaScript. A bare minimum of CSS is used to show functionality. The code is commented, but I've also written notes below on expected behaviour and ARIA usage.
 
+## Tabindex
+The tabindex attribute has three distinct uses:
+- tabindex="1" (or any number greater than 1) defines an explicit tab order. This is almost always a bad idea.
+- tabindex="0" allows elements besides links and form elements to receive keyboard focus. It does not change the tab order, but places the element in the logical navigation flow, as if it were a link on the page.
+- tabindex="-1" allows things besides links and form elements to receive "programmatic" focus, meaning focus can be set to the element through scripting, links, etc.
+
+[Learn more about tabindex](https://webaim.org/techniques/keyboard/tabindex).
+
+## Dropdown navigation (aka menu)
+When is a menu not a menu? When you're using ARIA. 
+
+In ARIA, a menu isa set of actions or functions. Not links. Right click anywhere on your screen right now. See the list that opens? That's a menu by ARIA definition. Don't add role="menu" to dropdown navigation. Do wrap it in a named nav landmark.
+
+A Menu is often a list of common actions or functions that the user can invoke. The Menu role is appropriate when a list of menu items is presented in a manner similar to a menu on a desktop application.
+
+The expected **keyboard** interaction for dropdown navigation is:
+- you can open or close each item in the menu using the enter key or spacebar
+- you can tab through the top level menu items and if a dropdown is open, you can tab through the links
+- you can tab through all menu items and dropdown links and see the focus (Focus outlines are provided for by browsers, as long as you haven't removed them using CSS. If you removed the outline, put it back.)
+- you can't tab through dropdown links if the dropdown is closed
+
+The expected **screen reader** interaction for dropdown navigation is:
+- navigation is nested inside a nav landmark with a unique name
+- top level menu items are buttons (No, they don't have to look like buttons, but they should be announced as buttons since they are interactive elements. They don't link to other pages so they shouldn't be links. I've made that mistake.)
+- when a dropdown is open, it's button has aria-expanded="true"
+- when a dropdown is closed, it's button has aria-expanded="false"
+- you won't hear dropdown links if the dropdown is closed
+
 ## Accordions
 This code is adapted from [WAI-ARIA Authoring Practices](https://www.w3.org/TR/wai-aria-practices/examples/accordion/accordion.html). I modified it by:
 - removing the CSS
@@ -10,13 +38,13 @@ This code is adapted from [WAI-ARIA Authoring Practices](https://www.w3.org/TR/w
 - simplifying the JS by removing the ability to control multiple accordions on one page and the ability to operate the accodions using arrow keys which is not a mandatory accessibility requirement
 
 The expected **keyboard** interaction for accordions is:
-- you can expand or collapse an accordion using the enter key or spacebar
+- you can open or close an accordion using the enter key or spacebar
 - you can tab through all accordions and see which accordion has the focus (Focus outlines are provided for buttons by browsers, as long as you haven't removed them using CSS. If you removed the outline, put it back.)
 
 The expected **screen reader** interaction for accordions is:
 - accordion controls are buttons (No, they don't have to look like buttons, but they should be announced as buttons since they are interactive elements. They don't link to other pages so they shouldn't be links. I've made that mistake.)
 - accordion controls are also headings - these should wrap around the buttons
-- when an accordion is open, it's *button* has aria-expanded="true" (Putting aria-expanded on the content the accordion exposes is a common error. I've done it.).
+- when an accordion is open, it's button has aria-expanded="true" (Putting aria-expanded on the content the accordion exposes is a common error. I've done it.).
 - when an accordion is closed, it's button has aria-expanded="false"
 
 ## Tabs
