@@ -2,6 +2,11 @@
   <head>
     <title>Test ARIA</title>
     <style>
+      /* support browsers that don't support hidden attribute */
+      [hidden] {
+        display: none;
+      }
+      
       /* make demo buttons easier to see */
       body, input, button {
         font-family: arial, sans-serif;
@@ -56,7 +61,100 @@
   <body>
     <div id="page">
     <h1>Test ARIA</h1>
+
+    <hr>
+    <!-- see https://webaim.org/techniques/keyboard/tabindex for more details
+    -->
+    <h2>Tabindex</h2>
+    <a href="#heading">Jump to heading</a>
+    <h3 id="heading" tabindex="-1">heading</h3>
+      
+    <div role="button" tabindex="0" style="border: 1px solid black">I want to be a button</div>
+    <p>To make me into a real button, add styling and event handlers for space bar and enter keypress.</p>
+      
+    <hr>
+    <!-- adapted from 
+    https://www.canadapost.ca/cpc/en/personal.page and https://www.w3.org/TR/wai-aria-practices/examples/disclosure/disclosure-navigation.html and https://www.smashingmagazine.com/2017/11/building-accessible-menu-systems/
+
+    an alternate menubar pattern where the dropdown can also open by hover: https://www.w3.org/TR/wai-aria-practices-1.2/examples/menubar/menubar-1/menubar-1.html
     
+    Modified Canada Post code to change top-level link to a button. Reduced the number of links and removed closing x to simplify example. See modal demo for how to create a closing x. Replaced the show/hide function with the hidden attribute and CSS which allowed me to remove tabindex="-1" and the associated toggling.
+    -->
+    <h2>Dropdown navigation</h2>
+      
+    <nav aria-label="Product navigation">
+      <ul>
+        <li>
+          <button type="button" aria-expanded="false" aria-controls="receiving">
+            Receiving
+          </button>
+          <ul id="receiving" hidden>
+            <li><h3><a role="menuitem" href="https://www.canadapost.ca/cpc/en/personal/receiving.page">Receiving overview</a></h3>
+              <ul>
+                <li><a href="https://www.canadapost.ca/cpc/en/personal/receiving/manage-mail.page">Manage your mail</a>
+                  <ul>
+                    <li><a href="https://www.canadapost.ca/cpc/en/personal/receiving/manage-mail/mail-forwarding.page">Forward your mail</a></li>
+                    <li><a href="https://www.canadapost.ca/cpc/en/personal/receiving/manage-mail/hold-mail.page">Hold your mail</a></li>
+                  </ul>
+                </li>
+                <li><a href="https://www.canadapost.ca/cpc/en/personal/receiving/alternative-delivery.page">Alternative delivery options</a>
+                  <ul>
+                    <li><a href="https://www.canadapost.ca/cpc/en/personal/receiving/alternative-delivery/flexdelivery.page">Deliver purchases to post office (FlexDelivery)</a></li>
+                    <li><a href="https://www.canadapost.ca/cpc/en/personal/receiving/alternative-delivery/post-office-box.page">Rent a post office box</a></li>
+                    <li><a href="https://www.canadapost.ca/cpc/en/personal/receiving/alternative-delivery/parcel-lockers.page">Parcel lockers</a></li>
+                  </ul>
+                </li>
+                <li><a href="https://www.canadapost.ca/cpc/en/personal/receiving/moving-house.page">Moving to a new home</a></li>
+                <li><a href="https://www.canadapost.ca/trackweb/en">Track a package</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <button type="button" aria-expanded="false" aria-controls="sending">
+            Sending
+          </button>
+          <ul id="sending" hidden>
+            <li>
+              <h3><a href="https://www.canadapost.ca/cpc/en/personal/sending.page">Sending overview</a></h3>
+                <ul>
+                  <li><a href="https://www.canadapost.ca/cpc/en/personal/sending/letters-mail.page">Letters and mail</a>
+                    <ul>
+                      <li><a href="https://www.canadapost.ca/cpc/en/personal/sending/letters-mail/postage-rates.page">Postage rates</a></li>
+                      <li><a href="https://www.canadapost.ca/cpc/en/personal/sending/letters-mail/letter-size.page">Letter weight and size</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="https://www.canadapost.ca/cpc/en/personal/sending/parcels.page">Parcels</a>
+                    <ul>
+                      <li><a href="https://www.canadapost.ca/cpc/en/personal/sending/parcels/ship-online.page">Ship online</a></li>
+                      <li><a href="https://www.canadapost.ca/cpc/en/personal/sending/parcels/return-labels.page">Return your purchase</a></li>
+                      <li><a href="https://www.canadapost.ca/cpotools/apps/wtz/business/landedCost">Estimate duties and taxes</a></li>
+                      <li><a href="https://www.canadapost.ca/cpotools/apps/cdc">Complete customs form</a></li>
+                    </ul>
+                  </li>
+                </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+      
+    <script>
+      var navButtons = document.querySelectorAll("nav button");
+      
+      for (i = 0; i < navButtons.length; i++) {
+        navButtons[i].addEventListener("click", showDropdown);
+      }
+        
+      function showDropdown() {
+        var expanded = this.getAttribute("aria-expanded") === "true" || false;
+        this.setAttribute("aria-expanded", !expanded);
+        var menu = this.nextElementSibling;
+        menu.hidden = !menu.hidden; 
+      }
+    </script>
+      
     <hr>
     <!-- adapted from 
     https://www.w3.org/TR/wai-aria-practices/examples/accordion/accordion.html 
@@ -403,8 +501,8 @@
       }
 
       // binds to both the button click and the escape key to close the modal
-      function modalClose ( event ) {
-        if (modalOpen && ( !event.keyCode || event.keyCode === 27 ) ) {
+      function modalClose (event) {
+        if (modalOpen && (!event.keyCode || event.keyCode === 27) ) {
           mOverlay.setAttribute("aria-hidden", "true");
           modalOpen = false;
           lastFocus.focus(); // return focus to the button used to open modal
@@ -412,8 +510,8 @@
       }
 
       // restrict focus to the modal window when it's open
-      function focusRestrict ( event ) {
-        if ( modalOpen && !modal.contains( event.target ) ) {
+      function focusRestrict(event) {
+        if (modalOpen && !modal.contains(event.target)) {
           event.stopPropagation();
           modal.focus();
         }
@@ -425,9 +523,9 @@
       }
 
       // close modal window by clicking on the overlay
-      mOverlay.addEventListener("click", function( e ) {
+      mOverlay.addEventListener("click", function(e) {
         if (e.target == modal.parentNode) {
-           modalClose( e );
+           modalClose(e);
          }
       }, false);
 
