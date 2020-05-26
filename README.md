@@ -3,6 +3,33 @@
 
 The file [test-aria.html](https://github.com/katekalcevich/Test-ARIA/blob/master/test-aria.html) has code for accessible accordions, tabs, notifations and modals written in HTML and JavaScript. A bare minimum of CSS is used to show functionality. The code is commented, but I've also written notes below on expected behaviour and ARIA usage.
 
+## Landmarks
+Landmarks can help screen reader users to understand the layout of a web page. You can create them using HTML elements (preferred) or ARIA roles.
+
+| HTML Element | ARIA Role | Rules |
+|---|---|---|
+| <header> | role="banner" | Don't nest, one per page |
+| <nav> | role="navigation" | Use labels if more than one per page |
+| N/A | role="search" | Don't use on a <form> element - put it on a parent div |
+| <main> | role="main" | Don't nest, one per page |
+| <aside> | role="complementary" | Don't nest, use labels if more than one per page |
+| <section> | role="region" | Use a label |
+| <form> | role="form" | Nest inside <div role="search"> if it's a search form |
+| <footer> | role="contentinfo" | Don't nest, one per page |
+| N/A | role="application" | Only use if keyboard commands are handled by the application rather than the browser |
+
+### Landmark guidelines
+- Some can't be nested (see table above)
+- Some must be unique to the page (see table above)
+- Don't override accessibility roles - in general use ARIA roles on <div>s since they have no existing accessibility role
+- No need to double up HTML and ARIA (for example, <main role="main"> unless you are supporting a specific browser and screen reader combination that doesn't support the landmarks you are using
+- If you have multiple landmarks of the same type, use a label to distinguish them (for example, <nav aria-label="Main"> and <nav aria-label="Education section">
+
+### References
+[HTML Sectioning Elememts](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/HTML5.html)
+[ARIA Landmarks](https://accessibility.oit.ncsu.edu/it-accessibility-at-nc-state/developers/accessibility-handbook/aria-landmarks/)
+[Where to Put Your Search Role](https://adrianroselli.com/2015/08/where-to-put-your-search-role.html)
+
 ## Tabindex
 The tabindex attribute has three distinct uses:
 - tabindex="1" (or any number greater than 1) defines an explicit tab order. This is almost always a bad idea.
