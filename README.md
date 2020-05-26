@@ -8,22 +8,22 @@ Landmarks can help screen reader users to understand the layout of a web page. Y
 
 | HTML Element | ARIA Role | Rules |
 |---|---|---|
-| <header> | role="banner" | Don't nest, one per page |
-| <nav> | role="navigation" | Use labels if more than one per page |
+| &lt;header&gt; | role="banner" | Don't nest, one per page |
+| &lt;nav&gt; | role="navigation" | Use labels if more than one per page |
 | N/A | role="search" | Don't use on a <form> element - put it on a parent div |
-| <main> | role="main" | Don't nest, one per page |
-| <aside> | role="complementary" | Don't nest, use labels if more than one per page |
-| <section> | role="region" | Use a label |
-| <form> | role="form" | Nest inside <div role="search"> if it's a search form |
-| <footer> | role="contentinfo" | Don't nest, one per page |
+| &lt;main&gt; | role="main" | Don't nest, one per page |
+| &lt;aside&gt; | role="complementary" | Don't nest, use labels if more than one per page |
+| &lt;section&gt; | role="region" | Use a label |
+| &lt;form&gt; | role="form" | Nest inside &lt;div role="search"&gt; if it's a search form |
+| &lt;footer&gt; | role="contentinfo" | Don't nest, one per page |
 | N/A | role="application" | Only use if keyboard commands are handled by the application rather than the browser |
 
 ### Landmark guidelines
 - Some can't be nested (see table above)
 - Some must be unique to the page (see table above)
 - Don't override accessibility roles - in general use ARIA roles on <div>s since they have no existing accessibility role
-- No need to double up HTML and ARIA (for example, <main role="main"> unless you are supporting a specific browser and screen reader combination that doesn't support the landmarks you are using
-- If you have multiple landmarks of the same type, use a label to distinguish them (for example, <nav aria-label="Main"> and <nav aria-label="Education section">
+- No need to double up HTML and ARIA (for example, &lt;main role="main"&gt; unless you are supporting a specific browser and screen reader combination that doesn't support the landmarks you are using
+- If you have multiple landmarks of the same type, use a label to distinguish them (for example, &lt;nav aria-label="Main"&gt; and &lt;nav aria-label="Education section"&gt;
 
 ### References
 [HTML Sectioning Elememts](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/HTML5.html)
