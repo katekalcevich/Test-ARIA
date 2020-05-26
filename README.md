@@ -25,18 +25,11 @@ Landmarks can help screen reader users to understand the layout of a web page. Y
 - No need to double up HTML and ARIA (for example, &lt;main role="main"&gt; unless you are supporting a specific browser and screen reader combination that doesn't support the landmarks you are using
 - If you have multiple landmarks of the same type, use a label to distinguish them (for example, &lt;nav aria-label="Main"&gt; and &lt;nav aria-label="Education section"&gt;
 
-### References
-[HTML Sectioning Elememts](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/HTML5.html)
-[ARIA Landmarks](https://accessibility.oit.ncsu.edu/it-accessibility-at-nc-state/developers/accessibility-handbook/aria-landmarks/)
-[Where to Put Your Search Role](https://adrianroselli.com/2015/08/where-to-put-your-search-role.html)
-
 ## Tabindex
 The tabindex attribute has three distinct uses:
 - tabindex="1" (or any number greater than 1) defines an explicit tab order. This is almost always a bad idea.
 - tabindex="0" allows elements besides links and form elements to receive keyboard focus. It does not change the tab order, but places the element in the logical navigation flow, as if it were a link on the page.
 - tabindex="-1" allows things besides links and form elements to receive "programmatic" focus, meaning focus can be set to the element through scripting, links, etc.
-
-[Learn more about tabindex](https://webaim.org/techniques/keyboard/tabindex).
 
 ## Dropdown navigation (aka menu)
 When is a menu not a menu? When you're using ARIA. 
