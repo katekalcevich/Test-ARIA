@@ -7,7 +7,7 @@
         display: none;
       }
       
-      /* make demo buttons easier to see */
+      /* make demo content easier to see */
       body, input, button {
         font-family: arial, sans-serif;
         font-size: 1em;
@@ -15,6 +15,46 @@
       
       label {
         font-weight: bold;
+      }
+     
+      /* sliding nav menu */
+      #menu-button {
+        display: block;
+        margin: 0.5rem 0 auto auto;
+        position: relative;
+      }
+      
+      #quick-links {
+        background-color: #ebebeb;
+        bottom: 0;
+        max-width: 220px;
+        overflow: auto;
+        position: fixed;
+        top: 0;
+        right: -220px;
+        width: 100%;
+        z-index: 0;
+        -moz-transition: all 300ms;
+        -o-transition: all 300ms;
+        -webkit-transition: all 300ms;
+        transition: all 300ms;
+      }
+
+      #page {
+        position: relative;
+        top: 0;
+        right: 0;
+
+        /* Important detail for mobile: 
+          container must be positioned on top of nav */
+        z-index: 1;
+      }
+      
+      body.active #quick-links {
+        -moz-transform: translateX(-220px);
+        -ms-transform: translateX(-220px);
+        -webkit-transform: translateX(-220px);
+        transform: translateX(-220px);
       }
 
       /* modal overlay */
@@ -61,9 +101,10 @@
   <body>
     <div id="page">
     <h1>Test ARIA</h1>
-
+      
     <hr>
-    <!-- see https://webaim.org/techniques/keyboard/tabindex for more details
+    <!-- more details at 
+    https://webaim.org/techniques/keyboard/tabindex
     -->
     <h2>Tabindex</h2>
     <a href="#heading">Jump to heading</a>
@@ -71,7 +112,64 @@
       
     <div role="button" tabindex="0" style="border: 1px solid black">I want to be a button</div>
     <p>To make me into a real button, add styling and event handlers for space bar and enter keypress.</p>
+
+    <hr>
+    <!-- adapted from
+    https://codepen.io/marcysutton/pen/JoQqVw and
+    https://knowbility.org/blog/2020/accessible-slide-menus/
+
+    Modified to use vanilla JavaScript instead of jQuery, to use hidden attribute instead of toggling aria-hidden and tabindex, and align more with the dropdown navigation example.
+    -->
+     
+    <nav id="quick-links" aria-label="Quick links" hidden>
+      <ul>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+
+    <h2>Sliding sidebar navigation</h2>
+    <button type="button" id="menu-button" aria-expanded="false">
+      Menu
+    </button>
+     
+    <script>
+      var menu = document.getElementById("quick-links"),
+          menuButton = document.getElementById("menu-button"),
+          menuLinks = menu.querySelectorAll("a");
       
+      // close menu on button click or escape keydown
+      menuButton.addEventListener("click", slideMenu);
+      document.addEventListener("keydown", menuClose);
+
+      function slideMenu() {
+        
+        // toggle menu state
+        var expanded = menuButton.getAttribute("aria-expanded") === "true" || false;
+        menuButton.setAttribute("aria-expanded", !expanded);
+        
+        // toggle active class on body to trigger slide in/out
+        document.body.classList.toggle("active");
+        
+        // toggle menu links visibility and focusability
+        menu.hidden = !menu.hidden; 
+        
+        // set focus on first menu link
+        menuLinks[0].focus();
+      }
+      
+      // binds to the escape key to close the menu
+      function menuClose(event) {
+        if (menuButton.getAttribute("aria-expanded") === "true" &&               event.keyCode === 27) {
+          slideMenu();
+          
+          // return focus to the button used to open menu
+          menuButton.focus();
+        }
+      }
+    </script>
+     
     <hr>
     <!-- adapted from 
     https://www.canadapost.ca/cpc/en/personal.page and https://www.smashingmagazine.com/2017/11/building-accessible-menu-systems/
@@ -484,14 +582,14 @@
       // open modal
       mOpen.addEventListener("click", modalShow);
 
-      // close modal
+      // close modal on close button click
       mClose.addEventListener("click", modalClose);
 
-      // close modal by keydown
+      // close modal on escape keydown
       document.addEventListener("keydown", modalClose);
       
       // open the modal
-      function modalShow (focusItem) {
+      function modalShow(focusItem) {
         lastFocus = document.activeElement; // save button used to open modal
         mOverlay.setAttribute("aria-hidden", "false");
         modalOpen = true;
@@ -499,7 +597,7 @@
       }
 
       // binds to both the button click and the escape key to close the modal
-      function modalClose (event) {
+      function modalClose(event) {
         if (modalOpen && (!event.keyCode || event.keyCode === 27) ) {
           mOverlay.setAttribute("aria-hidden", "true");
           modalOpen = false;
