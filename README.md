@@ -31,10 +31,26 @@ The tabindex attribute has three distinct uses:
 - tabindex="0" allows elements besides links and form elements to receive keyboard focus. It does not change the tab order, but places the element in the logical navigation flow, as if it were a link on the page.
 - tabindex="-1" allows things besides links and form elements to receive "programmatic" focus, meaning focus can be set to the element through scripting, links, etc.
 
+## Sliding sidebar navigation (aka menu)
+This type of navigation doesn't have a [WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.2/) from W3C. I've based expected interactions on an article by Knowbility on what they call [Slide-out navigation](https://knowbility.org/blog/2020/accessible-slide-menus/).
+
+The expected **keyboard** interaction for sliding sidebar navigation is:
+- you can tab to the menu button
+- you can open or close the menu using the enter key or spacebar
+- if the menu is open, you can tab through all menu links and see the focus (Focus outlines are provided for by browsers, as long as you haven't removed them using CSS. If you removed the outline, put it back.)
+- you can't tab through menu links if the menu is closed
+
+The expected **screen reader** interaction for sliding sidebar navigation is:
+- navigation is nested inside a nav landmark with a unique name
+- the element that opens the menu is a button (It doesn't have to look like a button, but should be announced as a button since it's an interactive elements. It doesn't link to other pages so it shouldn't be a link. I've made that mistake.)
+- when the menu is open, it's button has aria-expanded="true"
+- when the menu is closed, it's button has aria-expanded="false"
+- you won't hear menu links if the menu is closed
+
 ## Dropdown navigation (aka menu)
 When is a menu not a menu? When you're using ARIA. 
 
-In ARIA, a menu isa set of actions or functions. Not links. Right click anywhere on your screen right now. See the list that opens? That's a menu by ARIA definition. Don't add role="menu" to dropdown navigation. Do wrap it in a named nav landmark.
+In ARIA, a menu is a set of actions or functions. Not links. Right click anywhere on your screen right now. See the list that opens? That's a menu by ARIA definition. Don't add role="menu" to dropdown navigation. Do wrap it in a named nav landmark.
 
 A Menu is often a list of common actions or functions that the user can invoke. The Menu role is appropriate when a list of menu items is presented in a manner similar to a menu on a desktop application.
 
