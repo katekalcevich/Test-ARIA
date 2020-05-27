@@ -32,11 +32,12 @@ The tabindex attribute has three distinct uses:
 - tabindex="-1" allows things besides links and form elements to receive "programmatic" focus, meaning focus can be set to the element through scripting, links, etc.
 
 ## Sliding sidebar navigation (aka menu)
-This type of navigation doesn't have a [WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.2/) from W3C. I've based expected interactions on an article by Knowbility on what they call [Slide-out navigation](https://knowbility.org/blog/2020/accessible-slide-menus/).
+This type of navigation doesn't have a [WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.2/) from W3C. I've based expected interactions on dropdown navigation and modals.
 
 The expected **keyboard** interaction for sliding sidebar navigation is:
 - you can tab to the menu button
 - you can open or close the menu using the enter key or spacebar
+- you can close the menu using the escape key
 - if the menu is open, you can tab through all menu links and see the focus (Focus outlines are provided for by browsers, as long as you haven't removed them using CSS. If you removed the outline, put it back.)
 - you can't tab through menu links if the menu is closed
 
@@ -46,6 +47,8 @@ The expected **screen reader** interaction for sliding sidebar navigation is:
 - when the menu is open, it's button has aria-expanded="true"
 - when the menu is closed, it's button has aria-expanded="false"
 - you won't hear menu links if the menu is closed
+
+If a user tabs through all options in the sliding sidebar navigation, when the user tabs again their focus is now in the main page. If focusable content on the main page is hidden under the navigation, you may want to trap the focus in the navigation.
 
 ## Dropdown navigation (aka menu)
 When is a menu not a menu? When you're using ARIA. 
