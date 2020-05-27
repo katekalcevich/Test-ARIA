@@ -21,7 +21,7 @@ Landmarks can help screen reader users to understand the layout of a web page. Y
 ### Landmark guidelines
 - Some can't be nested (see table above)
 - Some must be unique to the page (see table above)
-- Don't override accessibility roles - in general use ARIA roles on <div>s since they have no existing accessibility role
+- Don't override accessibility roles - in general use ARIA roles on &lt;div&gt;s since they have no existing accessibility role
 - No need to double up HTML and ARIA (for example, &lt;main role="main"&gt; unless you are supporting a specific browser and screen reader combination that doesn't support the landmarks you are using
 - If you have multiple landmarks of the same type, use a label to distinguish them (for example, &lt;nav aria-label="Main"&gt; and &lt;nav aria-label="Education section"&gt;
 
