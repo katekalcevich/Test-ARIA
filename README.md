@@ -27,7 +27,7 @@ Landmarks can help screen reader users to understand the layout of a web page. Y
 
 ## Tabindex
 The tabindex attribute has three distinct uses:
-- tabindex="1" (or any number greater than 1) defines an explicit tab order. This is almost always a bad idea.
+- tabindex="1" (or any number greater than 1) defines an explicit tab order. This is almost always a bad idea because you can easily mess up the logical page tab order or someone else will in the future (in multiple developer scenarios).
 - tabindex="0" allows elements besides links and form elements to receive keyboard focus. It does not change the tab order, but places the element in the logical navigation flow, as if it were a link on the page.
 - tabindex="-1" allows things besides links and form elements to receive "programmatic" focus, meaning focus can be set to the element through scripting, links, etc.
 
