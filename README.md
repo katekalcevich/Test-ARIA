@@ -1,7 +1,7 @@
 # Testing ARIA
  Accessible components using ARIA. 
 
-The file [test-aria.html](https://github.com/katekalcevich/Test-ARIA/blob/master/test-aria.html) has code for accessible accordions, tabs, notifations and modals written in HTML and JavaScript. A bare minimum of CSS is used to show functionality. The code is commented, but I've also written notes below on expected behaviour and ARIA usage.
+The file [https://katekalcevich.github.io/Test-ARIA/test-aria.html](https://github.com/katekalcevich/Test-ARIA/blob/master/test-aria.html) has code for accessible accordions, tabs, notifations and modals written in HTML and JavaScript. A bare minimum of CSS is used to show functionality. The code is commented, but I've also written notes below on expected behaviour and ARIA usage.
 
 ## Landmarks
 Landmarks can help screen reader users to understand the layout of a web page. You can create them using HTML elements (preferred) or ARIA roles.
