@@ -2,7 +2,7 @@
   <head>
     <title>Test ARIA</title>
     <style>
-      /* support browsers that don't support hidden attribute */
+      /* for browsers that don't support hidden attribute */
       [hidden] {
         display: none;
       }
@@ -18,7 +18,7 @@
       }
      
       /* sliding nav menu */
-      #menu-button {
+      #quick-button {
         display: block;
         margin: 0.5rem 0 auto auto;
         position: relative;
@@ -34,27 +34,17 @@
         right: -220px;
         width: 100%;
         z-index: 0;
+        transition: all 300ms;
         -moz-transition: all 300ms;
         -o-transition: all 300ms;
         -webkit-transition: all 300ms;
-        transition: all 300ms;
-      }
-
-      #page {
-        position: relative;
-        top: 0;
-        right: 0;
-
-        /* Important detail for mobile: 
-          container must be positioned on top of nav */
-        z-index: 1;
       }
       
-      body.active #quick-links {
+      #quick-links[aria-hidden="false"] {
+        transform: translateX(-220px);
         -moz-transform: translateX(-220px);
         -ms-transform: translateX(-220px);
         -webkit-transform: translateX(-220px);
-        transform: translateX(-220px);
       }
 
       /* modal overlay */
@@ -108,66 +98,107 @@
     -->
     <h2>Tabindex</h2>
     <a href="#heading">Jump to heading</a>
-    <h3 id="heading" tabindex="-1">heading</h3>
-      
-    <div role="button" tabindex="0" style="border: 1px solid black">I want to be a button</div>
-    <p>To make me into a real button, add styling and event handlers for space bar and enter keypress.</p>
+    <h3 id="heading" tabindex="-1">Heading with tabindex -1</h3>
+    <h3 tabindex="0">Heading with tabindex 0</h3>
 
     <hr>
     <!-- adapted from
     https://codepen.io/marcysutton/pen/JoQqVw and
     https://knowbility.org/blog/2020/accessible-slide-menus/
 
-    Modified to use vanilla JavaScript instead of jQuery, to use hidden attribute instead of toggling aria-hidden and tabindex, and align more with the dropdown navigation example.
+    Modified to use JavaScript only, no jQuery and to simplify the code. I toggle aria-hidden on the container nav and change tabindex from -1 to 0 on links instead of toggling a hidden attribute because hidden elements can't use CSS transitions.
     -->
      
-    <nav id="quick-links" aria-label="Quick links" hidden>
+    <nav id="quick-links" aria-label="Quick links" aria-hidden="true">
       <ul>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#" tabindex="-1">Blog</a></li>
+        <li><a href="#" tabindex="-1">About</a></li>
+        <li><a href="#" tabindex="-1">Contact</a></li>
       </ul>
     </nav>
 
     <h2>Sliding sidebar navigation</h2>
-    <button type="button" id="menu-button" aria-expanded="false">
-      Menu
+    <button type="button" id="quick-button" aria-expanded="false">
+      Quick links
     </button>
      
     <script>
-      var menu = document.getElementById("quick-links"),
-          menuButton = document.getElementById("menu-button"),
-          menuLinks = menu.querySelectorAll("a");
       
-      // close menu on button click or escape keydown
-      menuButton.addEventListener("click", slideMenu);
-      document.addEventListener("keydown", menuClose);
-
+      var quickNav    = document.getElementById("quick-links"),
+          quickButton = document.getElementById("quick-button"),
+          quickLinks  = quickNav.querySelectorAll("a");
+    
+      // slide menu in or out on quick links button click
+      quickButton.addEventListener("click", slideMenu);
+      
       function slideMenu() {
-        
-        // toggle menu state
-        var expanded = menuButton.getAttribute("aria-expanded") === "true" || false;
-        menuButton.setAttribute("aria-expanded", !expanded);
-        
-        // toggle active class on body to trigger slide in/out
-        document.body.classList.toggle("active");
-        
-        // toggle menu links visibility and focusability
-        menu.hidden = !menu.hidden; 
-        
-        // set focus on first menu link
-        menuLinks[0].focus();
-      }
-      
-      // binds to the escape key to close the menu
-      function menuClose(event) {
-        if (menuButton.getAttribute("aria-expanded") === "true" &&               event.keyCode === 27) {
-          slideMenu();
-          
-          // return focus to the button used to open menu
-          menuButton.focus();
+        if (quickNav.getAttribute("aria-hidden") === "true") {
+          showMenu();
+        } else {
+          hideMenu();
         }
       }
+
+      function showMenu() {
+        quickNav.setAttribute("aria-hidden", "false");
+        quickButton.setAttribute("aria-expanded", "true");
+        
+        for (i = 0; i < quickLinks.length; i++) {
+          quickLinks[i].removeAttribute("tabindex");
+        }
+        // move focus to first link in menu
+        quickLinks[0].focus();
+      }
+      
+      function hideMenu() {
+        quickNav.setAttribute("aria-hidden", "true");
+        quickButton.setAttribute("aria-expanded", "false");
+        
+        for (i = 0; i < quickLinks.length; i++) {
+          quickLinks[i].setAttribute("tabindex", "-1");
+        }
+        // return focus to button used to open menu
+        quickButton.focus();
+      }
+      
+      // allow navigation using arrow keys and close with escape key     
+      quickNav.addEventListener("keydown", e => {
+        
+        if (e.keyCode === 38 || e.keyCode === 40) {
+          // prevent page scroll on arrow up/down when menu is open
+          e.preventDefault();
+          
+          // get the parent <li> of selected <a>
+          var current = document.activeElement.parentElement;
+          
+          // move to next link on down arrow
+          if (e.keyCode === 40) {
+            if(current.nextElementSibling) {
+              // focus on the child <a> of the next <li>
+              current.nextElementSibling.firstChild.focus();
+            } else {
+              // if no next link, circle back to first link
+              quickLinks[0].focus();
+            }
+          
+          // move to previous link on up arrow
+          } else if (e.keyCode === 38) {
+            if(current.previousElementSibling) {
+              // focus on the child <a> of the previous <li>
+              current.previousElementSibling.firstChild.focus(); 
+            } else {
+              // if no previous link, circle around to last link
+              quickLinks[quickLinks.length - 1].focus();
+            }
+          }
+        }
+        
+        // close menu on escape key press
+        if (e.keyCode === 27) {
+          slideMenu();
+        }
+        
+      });
     </script>
      
     <hr>
@@ -178,12 +209,13 @@
     -->
     <h2>Dropdown navigation</h2>
       
-    <nav aria-label="Product navigation">
+    <nav aria-label="Product navigation" id="product-nav">
       <ul>
         <li>
           <button type="button" aria-expanded="false" aria-controls="receiving">
             Receiving
           </button>
+          
           <ul id="receiving" hidden>
             <li><h3><a role="menuitem" href="https://www.canadapost.ca/cpc/en/personal/receiving.page">Receiving overview</a></h3>
               <ul>
@@ -211,6 +243,7 @@
           <button type="button" aria-expanded="false" aria-controls="sending">
             Sending
           </button>
+          
           <ul id="sending" hidden>
             <li>
               <h3><a href="https://www.canadapost.ca/cpc/en/personal/sending.page">Sending overview</a></h3>
@@ -237,18 +270,55 @@
     </nav>
       
     <script>
-      var navButtons = document.querySelectorAll("nav button");
+      var nav        = document.getElementById("product-nav"),
+          navButtons = nav.getElementsByTagName("button"),
+          menu       = nav.getElementsByTagName("ul"),
+          menuLinks  = nav.getElementsByTagName("a"),
+          lastFocus;
       
       for (i = 0; i < navButtons.length; i++) {
-        navButtons[i].addEventListener("click", showDropdown);
+        navButtons[i].addEventListener("click", toggleDropdown);
       }
         
-      function showDropdown() {
+      // show/hide the dropdown menu
+      function toggleDropdown() {
+        
         var expanded = this.getAttribute("aria-expanded") === "true" || false;
         this.setAttribute("aria-expanded", !expanded);
-        var menu = this.nextElementSibling;
-        menu.hidden = !menu.hidden; 
+        
+        // toggle the hidden attribute on the ul under the menu button
+        menu = this.nextElementSibling;
+        menu.hidden = !menu.hidden;
+        
+        // remember button used to open menu
+        lastFocus = document.activeElement;
+        
+        // if menu is open, set focus to first link
+        if (this.getAttribute("aria-expanded")) {
+          // in the ul under the menu button, get first <a> and set focus
+          this.nextElementSibling.getElementsByTagName("a")[0].focus();
+        }
+        // if menu is closed return focus to button used to open the menu
+        else {
+          lastFocus.focus();
+        }
       }
+
+      // close all open menus on escape key press
+      nav.addEventListener("keydown", function(e) {
+        
+        if (e.keyCode === 27) {
+          for (i = 0; i < navButtons.length; i++) {
+            navButtons[i].setAttribute("aria-expanded", "false");
+            navButtons[i].nextElementSibling.hidden = "true";
+          }
+
+          // return focus to last button used to open a menu
+          lastFocus.focus();
+        }
+
+      });
+        
     </script>
       
     <hr>
@@ -299,21 +369,24 @@
       function showContent() {
         var target = event.target;
         
-        // check if the current accordion button is expanded
+        // check if the clicked accordion button is expanded
         var isExpanded = target.getAttribute("aria-expanded") == "true";
 
+        // show the accordion content
         if (!isExpanded) {
           target.setAttribute("aria-expanded", "true");
           target.setAttribute("style", "background: yellow");
-          // hide the accordion content
+          
           document.getElementById(
             target.getAttribute("aria-controls")
           ).style.display = "block";
         }
+        
+        // hide the accordion content
         else {
           target.setAttribute("aria-expanded", "false");
           target.removeAttribute("style");
-          // hide the accordion content
+          
           document.getElementById(
             target.getAttribute("aria-controls")
           ).style.display = "none";
@@ -326,11 +399,11 @@
     <!-- adapted from 
     https://www.deque.com/blog/a11y-support-series-part-1-aria-tab-panel-accessibility/
 
-    Modified from WAI-ARIA examples to allow users to tab between tabs as some keyboard users would expect. In the ARIA specs, you should only be able to navigate by arrow keys. 
+    Modified from WAI-ARIA recommendations to allow users to tab between tabs as some keyboard users would expect. In the ARIA specs, you should only be able to navigate by arrow keys. 
 
     I've also set the focus to the selected tab panel so that a screen reader goes right to selected tab's panel content. 
 
-    Divs aren't normally focusable, but adding tabindex="0" with JavaScript will move the focus to the panel content. 
+    Divs aren't normally focusable, but adding tabindex="-1" with JavaScript will move the focus to the panel content. 
     -->
     <h2>Tabs</h2>
  
@@ -374,7 +447,9 @@
     </div><!-- .tabs -->
     
     <script>
-      var tabs = document.querySelectorAll("[role=tab]");
+      var tabs = document.querySelectorAll("[role=tab]"),
+          tabList = document.querySelector("[role=tablist]"),
+          tabPanels = document.querySelectorAll("[role=tabpanel]"); 
       
       for (i = 0; i < tabs.length; i++) {
         tabs[i].addEventListener("click", showTabPanel);
@@ -383,33 +458,33 @@
       function showTabPanel() { 
         var target = event.target;
         
-        for (i = 0; i < tabs.length; i++) {
-          tabs[i].setAttribute("aria-selected", "false");
-          tabs[i].setAttribute("style", "background: default");
-        }
-        target.setAttribute("aria-selected", "true");
-        target.setAttribute("style", "background: yellow");
-
-        // find panel to open through the aria-controls of the clicked tab
-        var tabPanelToOpen = document.getElementById(
-          target.getAttribute("aria-controls")
-        );
-        var tabPanels = document.querySelectorAll("[role=tabpanel]"); 
+        // close any open tabs and reset tab button
         for (i = 0; i < tabPanels.length; i++) {
             tabPanels[i].style.display = "none";
             tabPanels[i].removeAttribute("tabindex");
         }
+
+        for (i = 0; i < tabs.length; i++) {
+          tabs[i].setAttribute("aria-selected", "false");
+          tabs[i].setAttribute("style", "background: default");
+        }
         
-        // open panel and set focus to content so user bypasses other tabs
+        // find panel to open through the aria-controls of the clicked tab button
+        var tabPanelToOpen = document.getElementById(
+          target.getAttribute("aria-controls")
+        );
+        
+        // open selected tab and set focus on content so user bypasses other tabs
         tabPanelToOpen.style.display = "block";
         tabPanelToOpen.setAttribute("tabindex", -1);
         tabPanelToOpen.focus();
+        
+        // highlight open tab button and update aria
+        target.setAttribute("aria-selected", "true");
+        target.setAttribute("style", "background: yellow");
       }
       
       // add ability to navigate tabs using arrow keys
-      var tabList = document.querySelector("[role=tablist]");
-
-      // add listener to entire tablist (instead of looping through each tab)
       tabList.addEventListener("keydown", e => {
         
         if (e.keyCode === 39 || e.keyCode === 37) {
@@ -421,6 +496,7 @@
               selected.nextElementSibling.click();
               selected.nextElementSibling.focus();
             }
+            
           // move left on left arrow
           } else if (e.keyCode === 37) {
             if (selected.previousElementSibling) {
@@ -440,7 +516,7 @@
     https://www.w3.org/WAI/tutorials/forms/notifications/
     https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA19
 
-    Notifications should be close enough to the users focus so that someone using magnification will notice them. If not, move the focus.
+    Notifications should be close enough to the user's focus so someone using magnification will notice them. If not, move the focus with JavaScript.
 
     If a form has multiple errors, it's helpful to notify the user how many errors there are, but it's not required for accessibility compliance.
 
@@ -486,18 +562,20 @@
     <div id="alert" role="alert"></div>
     
     <script>
+      
       var formSubmit = document.getElementById("form-submit"),
-          formCancel = document.getElementById("form-cancel");
+          formCancel = document.getElementById("form-cancel"),
+          status = document.getElementById("status"),
+          errName = document.getElementById("error-name"),
+          errPhone = document.getElementById("error-phone"),
+          name = document.getElementById("name"),
+          phone = document.getElementById("phone");
+      
       formSubmit.addEventListener("click", showError, false);
       formCancel.addEventListener("click", showAlert);
       
+      // show two errors on the page (this function demos error messaging only - it doesn't actually check for errors)
       function showError() {
-        var status = document.getElementById("status"),
-            errName = document.getElementById("error-name"),
-            errPhone = document.getElementById("error-phone"),
-            name = document.getElementById("name"),
-            phone = document.getElementById("phone");
-        
         status.innerHTML = "There are two errors on this page. Please fix them and resubmit the form.";
         errName.innerHTML = "&nbsp;<strong>Error</strong>: Name is required";
         errPhone.innerHTML = "&nbsp;<strong>Error</strong>: Phone is required";
@@ -506,6 +584,7 @@
         name.focus();
       }
       
+      // show alert (this demos the alert role - it doesn't have any other cancellation functionality like clearing form fields)
       function showAlert() {
         var alert = document.getElementById("alert");
         alert.innerHTML = "Your form submission was cancelled."; 
@@ -520,15 +599,13 @@
     https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/6793fff0-3ca1-4c05-b383-81aa8c9163e8/accessible.html
     https://codepen.io/scottohara/pen/lIdfv
 
-    Styles included in the <head> because you can't demo a modal without style.
+    Styles included in the <head> because you can't demo a modal without styles.
     You need to move focus into the modal when it opens and keep it there until it is closed.
-
-    Modals need to close using the escape key or by clicking/pressing enter/pressing spacebar on the close button.
     -->
     <h2>Modal dialog</h2>
 
     <p>
-      <button type="button" id="modal-open">Sign in</button>
+      <button type="button" id="modal-open">Sign in modal</button>
     </p>
     <p>
       <button onclick="openDialog()">Regular dialog</button>
@@ -563,30 +640,24 @@
     </div><!-- .modal-overlay -->
     
     <script>
-    // place modal window as the first child of the #page node
-    var m = document.getElementById("modal-window"),
-        p = document.getElementById("page");
-    p.parentNode.insertBefore(m, p);
-
-    (function() {
+      
+      // place modal window as the first child of the #page div
+      var m = document.getElementById("modal-window"),
+          p = document.getElementById("page");
+      p.parentNode.insertBefore(m, p);
 
       var mOverlay = document.getElementById("modal-window"),
-          mOpen = document.getElementById("modal-open"),
-          mClose = document.getElementById("modal-close"),
-          modal = document.getElementById("modal-holder"),
+          mOpen    = document.getElementById("modal-open"),
+          mClose   = document.getElementById("modal-close"),
+          modal    = document.getElementById("modal-holder"),
           firstField = document.getElementById("user"),
-          allNodes = document.querySelectorAll("*"),
-          modalOpen = false,
+          allNodes   = document.querySelectorAll("*"),
+          modalOpen  = false,
           lastFocus;
 
-      // open modal
-      mOpen.addEventListener("click", modalShow);
-
-      // close modal on close button click
-      mClose.addEventListener("click", modalClose);
-
-      // close modal on escape keydown
-      document.addEventListener("keydown", modalClose);
+      mOpen.addEventListener("click", modalShow); // sign in button click
+      mClose.addEventListener("click", modalClose); // modal close button click
+      document.addEventListener("keydown", modalClose); // escape key press
       
       // open the modal
       function modalShow(focusItem) {
@@ -596,36 +667,34 @@
         firstField.focus(); // set focus on the first field in the modal    
       }
 
-      // binds to both the button click and the escape key to close the modal
-      function modalClose(event) {
-        if (modalOpen && (!event.keyCode || event.keyCode === 27) ) {
-          mOverlay.setAttribute("aria-hidden", "true");
-          modalOpen = false;
-          lastFocus.focus(); // return focus to the button used to open modal
-        }
-      }
-
       // restrict focus to the modal window when it's open
-      function focusRestrict(event) {
-        if (modalOpen && !modal.contains(event.target)) {
-          event.stopPropagation();
-          modal.focus();
-        }
-      }
-      
-      // restrict tab focus to elements inside modal window
       for (i = 0; i < allNodes.length; i++) {
         allNodes.item(i).addEventListener("focus", focusRestrict);
       }
 
-      // close modal window by clicking on the overlay
+      function focusRestrict(e) {
+        if (modalOpen && !modal.contains(e.target)) {
+          e.stopPropagation();
+          firstField.focus();
+        }
+      }
+      
+      // button click or escape key closes the modal
+      function modalClose(e) {
+        if (modalOpen && (!e.keyCode || e.keyCode === 27) ) {
+          mOverlay.setAttribute("aria-hidden", "true");
+          modalOpen = false;
+          lastFocus.focus(); // return focus to button used to open modal
+        }
+      }
+      
+      // clicking on the overlay closes the modal
       mOverlay.addEventListener("click", function(e) {
         if (e.target == modal.parentNode) {
            modalClose(e);
          }
       }, false);
 
-    })();
     </script>
     
     <script>
