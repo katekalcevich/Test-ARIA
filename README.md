@@ -32,7 +32,9 @@ The tabindex attribute has three distinct uses:
 - tabindex="-1" allows things besides links and form elements to receive "programmatic" focus, meaning focus can be set to the element through scripting, links, etc.
 
 ## Sliding sidebar navigation (aka menu)
-This type of navigation doesn't have a [WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.2/) from W3C. I've based expected interactions on dropdown navigation and modals.
+This type of navigation doesn't have a [WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.2/) from W3C. I've based expected interactions on general [ARIA conventions](https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_generalnav).
+
+Adding arrow key navigation support is tricky with a mega menu or any navigation with multiple levels of links. I've stuck with tab key support only in this example due to the nested lists. I've added arrow key support in the following example which is a simpler navigation menu. If you do wish to add full keyboard support to a menu, including arrow keys, I'd suggest using [Adobe's Accessible Mega Menu jQuery plugin](https://adobe-accessibility.github.io/Accessible-Mega-Menu/). 
 
 The expected **keyboard** interaction for sliding sidebar navigation is:
 - you can tab to the menu button
@@ -62,6 +64,7 @@ The expected **keyboard** interaction for dropdown navigation is:
 - you can tab through the top level menu items and if a dropdown is open, you can tab through the links
 - you can tab through all menu items and dropdown links and see the focus (Focus outlines are provided for by browsers, as long as you haven't removed them using CSS. If you removed the outline, put it back.)
 - you can't tab through dropdown links if the dropdown is closed
+- you can use the up and down arrow keys to navigate the links
 
 The expected **screen reader** interaction for dropdown navigation is:
 - navigation is nested inside a nav landmark with a unique name
