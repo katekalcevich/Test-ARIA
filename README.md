@@ -35,9 +35,9 @@ For example, a radio group has several radio buttons, each of which is focusable
 ## Cards
 There is very little ARIA in this example. This type of navigation doesn't have a [WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.2/) from W3C. I've based it on Heydon Pickering's [inclusive cards component](https://inclusive-components.design/cards/).
 
-He suggests using list structure so that users know how many cards there are. Cards should have headings — <h2> in this case — because they belong to a flat list hierarchy. Also note that the image is treated as decorative in this example with an empty alt value.
+He suggests using list structure so that users know how many cards there are. Cards should have headings — &lt;h2&gt; in this case — because they belong to a flat list hierarchy. Also note that the image is treated as decorative in this example with an empty alt value.
  
-Many cards have a click area of the whole card - a convention of sorts. If you wrap the entire card in an <a> tag, the screen reader experience isn't great - there's just too much content read out. Instead, we'll use CSS and aria-describedby to "fake" a link that covers the entire card using :after and empty content.
+Many cards have a click area of the whole card - a convention of sorts. If you wrap the entire card in an &lt;a&gt; tag, the screen reader experience isn't great - there's just too much content read out. Instead, we'll use CSS and aria-describedby to "fake" a link that covers the entire card using :after and empty content.
  
 ## Tabindex
 The tabindex attribute has three distinct uses:
