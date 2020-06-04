@@ -160,38 +160,49 @@
     <h2>Keyboard support</h2>
       
     <form>
-      <label for="firstname">First name:</label>
-      <input type="text" name="firstname" id="firstname"><br>
+      <p>
+        <label for="fullname">Name:</label>
+        <input type="text" name="fullname" id="fullname">
+      </p>
 
-      <input type="checkbox" name="subscribe" id="subscribe">
-      <label for="subscribe">Subscribe to newsletter</label>
+      <p>
+        <input type="checkbox" name="subscribe" id="subscribe">
+        <label for="subscribe">Subscribe to newsletter</label>
+      </p>
       
-      <fieldset>
-      <legend>Output format</legend>
-        <div>
-          <input type="radio" name="format" id="txt" value="txt" checked>
-          <label for="txt">Text file</label>
-        </div>
-        <div>
-          <input type="radio" name="format" id="csv" value="csv">
-          <label for="csv">CSV file</label>
-        </div>
-      </fieldset>
+      <p>
+        <fieldset>
+        <legend>Newsletter format</legend>
+          <div>
+            <input type="radio" name="format" id="txt" value="txt" checked>
+            <label for="txt">Plain text</label>
+          </div>
+          <div>
+            <input type="radio" name="format" id="web" value="web">
+            <label for="web">Web page</label>
+          </div>
+        </fieldset>
+      </p>
       
-      <fieldset>
-      <legend>I want to receive</legend>
-        <input type="checkbox" name="newsletter" id="check_1"> <label for="check_1">The weekly newsletter</label>
-        <input type="checkbox" name="company_offers" id="check_2"> <label for="check_2">Offers from the company</label>
-        <input type="checkbox" name="assoc_offers" id="check_3"> <label for="check_3">Offers from associated companies</label>
-      </fieldset>
+      <p>
+        <fieldset>
+        <legend>I want to receive</legend>
+          <input type="checkbox" name="newsletter" id="check_1"> <label for="check_1">The weekly newsletter</label><br>
+          <input type="checkbox" name="company_offers" id="check_2"> <label for="check_2">Offers from the company</label><br>
+          <input type="checkbox" name="assoc_offers" id="check_3"> <label for="check_3">Offers from associated companies</label>
+        </fieldset>
+      </p>
       
-      <select>
-        <option value="8.01.1">Lecture 01: Powers of Ten</option>
-        <option value="8.01.2">Lecture 02: 1D Kinematics</option>
-        <option value="8.01.3">Lecture 03: Vectors</option>
-      </select>
+      <p>
+        <label for="frequency">Frequency</label>
+        <select id="frequency">
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+        </select>
+      </p>
       
-      <input type="submit" value="Submit">
+      <input type="submit" value="Subscribe">
     </form>
       
     <hr>
