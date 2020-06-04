@@ -32,6 +32,13 @@ A convention across all platforms is that the tab and shift+tab keys move focus 
 
 For example, a radio group has several radio buttons, each of which is focusable. However, only one of the radio buttons can be tabbed to. Pressing the tab key moves focus to a single radio button in the group and pressing tab again exits the radio group. The arrow keys are used to move focus among the radio buttons in the group.
 
+## Cards
+There is very little ARIA in this example. This type of navigation doesn't have a [WAI-ARIA design pattern](https://www.w3.org/TR/wai-aria-practices-1.2/) from W3C. I've based it on Heydon Pickering's [inclusive cards component](https://inclusive-components.design/cards/).
+
+He suggests using list structure so that users know how many cards there are. Cards should have headings — <h2> in this case — because they belong to a flat list hierarchy. Also note that the image is treated as decorative in this example with an empty alt value.
+ 
+Many cards have a click area of the whole card - a convention of sorts. If you wrap the entire card in an <a> tag, the screen reader experience isn't great - there's just too much content read out. Instead, we'll use CSS and aria-describedby to "fake" a link that covers the entire card using :after and empty content.
+ 
 ## Tabindex
 The tabindex attribute has three distinct uses:
 - tabindex="1" (or any number greater than 1) defines an explicit tab order. This is almost always a bad idea because you can easily mess up the logical page tab order or someone else will in the future (in multiple developer scenarios).
