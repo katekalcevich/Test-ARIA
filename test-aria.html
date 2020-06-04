@@ -155,6 +155,47 @@
 
     <hr>
     <!-- adapted from
+    https://www.w3.org/WAI/tutorials/forms/
+    -->
+    <h2>Keyboard support</h2>
+      
+    <form>
+      <label for="firstname">First name:</label>
+      <input type="text" name="firstname" id="firstname"><br>
+
+      <input type="checkbox" name="subscribe" id="subscribe">
+      <label for="subscribe">Subscribe to newsletter</label>
+      
+      <fieldset>
+      <legend>Output format</legend>
+        <div>
+          <input type="radio" name="format" id="txt" value="txt" checked>
+          <label for="txt">Text file</label>
+        </div>
+        <div>
+          <input type="radio" name="format" id="csv" value="csv">
+          <label for="csv">CSV file</label>
+        </div>
+      </fieldset>
+      
+      <fieldset>
+      <legend>I want to receive</legend>
+        <input type="checkbox" name="newsletter" id="check_1"> <label for="check_1">The weekly newsletter</label>
+        <input type="checkbox" name="company_offers" id="check_2"> <label for="check_2">Offers from the company</label>
+        <input type="checkbox" name="assoc_offers" id="check_3"> <label for="check_3">Offers from associated companies</label>
+      </fieldset>
+      
+      <select>
+        <option value="8.01.1">Lecture 01: Powers of Ten</option>
+        <option value="8.01.2">Lecture 02: 1D Kinematics</option>
+        <option value="8.01.3">Lecture 03: Vectors</option>
+      </select>
+      
+      <input type="submit" value="Submit">
+    </form>
+      
+    <hr>
+    <!-- adapted from
     https://inclusive-components.design/cards/ and
     https://www.canadapost.ca/cpc/en/tools.page
 
