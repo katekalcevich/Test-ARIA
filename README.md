@@ -25,6 +25,13 @@ Landmarks can help screen reader users to understand the layout of a web page. Y
 - No need to double up HTML and ARIA (for example, &lt;main role="main"&gt; unless you are supporting a specific browser and screen reader combination that doesn't support the landmarks you are using
 - If you have multiple landmarks of the same type, add a unique label for each one (for example, &lt;nav aria-label="Main"&gt; and &lt;nav aria-label="Education section"&gt;
 
+## Keyboard support
+Unlike HTML form elements, browsers don't automatically make ARIA components keyboard accessible. Developers have to provide keyboard support in their code. For a web page to be accessible, all interactive elements must work with a keyboard. 
+
+A convention across all platforms is that the tab and shift+tab keys move focus from one user interface component to another and arrow keys move focus inside of individual components.
+
+For example, a radio group has several radio buttons, each of which is focusable. However, only one of the radio buttons can be tabbed to. Pressing the tab key moves focus to a single radio button in the group and pressing tab again exits the radio group. The arrow keys are used to move focus among the radio buttons in the group.
+
 ## Tabindex
 The tabindex attribute has three distinct uses:
 - tabindex="1" (or any number greater than 1) defines an explicit tab order. This is almost always a bad idea because you can easily mess up the logical page tab order or someone else will in the future (in multiple developer scenarios).
