@@ -33,11 +33,11 @@ A convention across all platforms is that the tab and shift+tab keys move focus 
 For example, a radio group has several radio buttons, each of which is focusable. However, only one of the radio buttons can be tabbed to. Pressing the tab key moves focus to a single radio button in the group and pressing tab again exits the radio group. The arrow keys are used to move focus among the radio buttons in the group.
 
 ### Navigate forms using a keyboard
-**Tab key** to focus on text input, text area, checkboxes
-**Arrow keys** to check radio buttons and navigate select options
-**Spacebar** to check a checkbox
-**Spacebar or enter** to activate button and choose select option
-**enter** to choose autocomplete option
+* **Tab key** to focus on text input, text area, checkboxes
+* **Arrow keys** to check radio buttons and navigate select options
+* **Spacebar** to check a checkbox
+* **Spacebar or enter** to activate button and choose select option
+* **enter** to choose autocomplete option
 
 Anything you build with non-standard HTML form elements must support the same behaviours.
 
