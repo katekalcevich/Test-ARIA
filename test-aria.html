@@ -303,6 +303,12 @@
         quickButton.focus();
       }
       
+      /* There are multiple elements on this page that can be closed with the
+      escape key. For simplicity, I've added a listener to each component, 
+      but ideally, the escape key should work outside each specific 
+      component. This would involve a global page listener that would close 
+      any of the open components and reset the focus properly. */
+      
       // allow navigation using arrow keys and close with escape key     
       quickNav.addEventListener("keydown", e => {
         
@@ -446,6 +452,12 @@
         }
       }
 
+      /* There are multiple elements on this page that can be closed with the
+      escape key. For simplicity, I've added a listener to each component, 
+      but ideally, the escape key should work outside each the specific 
+      component. This would involve a global page listener that would close 
+      any of the open components and reset the focus properly. */
+      
       // close all open menus on escape key press
       nav.addEventListener("keydown", function(e) {
         
@@ -456,7 +468,9 @@
           }
 
           // return focus to last button used to open a menu
-          lastFocus.focus();
+          if (lastFocus) {
+            lastFocus.focus();
+          }
         }
 
       });
