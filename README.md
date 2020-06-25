@@ -132,7 +132,7 @@ The expected **keyboard** interaction for tabs is:
 I've ignored the specs for the reason noted above - it breaks usability for many people. That's bad.
 
 What I've done instead for **keyboard** interaction is:
-- you can tab through all accordions and see which accordion has the focus (Focus outlines are provided for buttons by browsers, as long as you haven't removed them using CSS. If you removed the outline, put it back.)
+- you can tab through all tabs and see which tab has the focus (Focus outlines are provided for buttons by browsers, as long as you haven't removed them using CSS. If you removed the outline, put it back.)
 - you can open a tab using the the enter key or spacebar
 
 The expected **screen reader** interaction for tabs is:
