@@ -1,7 +1,7 @@
 # Testing ARIA
  Accessible components using ARIA. 
 
-The file [test-aria.html](https://katekalcevich.github.io/Test-ARIA/test-aria.html) has code for accessible cards, navigation, accordions, tabs, notifations and modals written in HTML and JavaScript. A bare minimum of CSS is used to show functionality. There's also a tabindex and forms demo for keyboard and screen reader testing. The code is commented and I've also written notes below on expected behaviour and ARIA usage.
+The file [test-aria.html](https://katekalcevich.github.io/Test-ARIA/test-aria.html) has code for accessible cards, navigation, accordions, tabs, notifications and modals written in HTML and JavaScript. A bare minimum of CSS is used to show functionality. There's also a tabindex and forms demo for keyboard and screen reader testing. The code is commented and I've also written notes below on expected behaviour and ARIA usage.
 
 Attribution is given in the code comments where code has been reused/repurposed. Feedback and improvements are welcome.
 
