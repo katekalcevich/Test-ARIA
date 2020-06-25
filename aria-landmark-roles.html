@@ -12,9 +12,10 @@
   <body>
     <header role="banner">
       <nav aria-label="Main">Links go here</nav>
-      <div role="search">
-        <form>Search goes here</form>
-      </div>
+      <!-- note that role search on a form element may throw a validator warning, 
+           but if you read the update on the "where to put your search role" article linked above, 
+           you'll see that it's allowed. -->
+      <form role="search">Search goes here</form>
     </header>
 
     <main>
