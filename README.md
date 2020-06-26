@@ -27,7 +27,7 @@ Landmarks can help screen reader users to understand the layout of a web page. Y
 - If you have multiple landmarks of the same type, add a unique label for each one (for example, &lt;nav aria-label="Main"&gt; and &lt;nav aria-label="Education section"&gt;
 - Limit use of role="region" to content with a purpose that can't be described by any other landmark role
 
-* You can have more than one header or footer element on a page, but there should only be one banner and contentinfo landmark.
+&ast; You can have more than one header or footer element on a page, but there should only be one banner and contentinfo landmark.
 
 ### Landmark demos
 
