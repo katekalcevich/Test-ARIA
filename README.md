@@ -10,22 +10,24 @@ Landmarks can help screen reader users to understand the layout of a web page. Y
 
 | HTML Element | ARIA Role | Rules |
 |---|---|---|
-| &lt;header&gt; | role="banner" | Don't nest, one per page |
+| &lt;header&gt; | role="banner" | One per page* |
 | &lt;nav&gt; | role="navigation" | Use labels if more than one per page |
-| N/A | role="search" | Don't use on a <form> element - put it on a parent div |
-| &lt;main&gt; | role="main" | Don't nest, one per page |
-| &lt;aside&gt; | role="complementary" | Don't nest, use labels if more than one per page |
-| &lt;section&gt; | role="region" | Use a label |
-| &lt;form&gt; | role="form" | Nest inside &lt;div role="search"&gt; if it's a search form |
-| &lt;footer&gt; | role="contentinfo" | Don't nest, one per page |
-| N/A | role="application" | Only use if keyboard commands are handled by the application rather than the browser |
+| N/A | role="search" |  |
+| &lt;main&gt; | role="main" | One per page |
+| &lt;aside&gt; | role="complementary" | Use labels if more than one per page |
+| &lt;section&gt; | role="region" | Requires a label to be exposed as a landmark |
+| &lt;form&gt; | role="form" |  |
+| &lt;footer&gt; | role="contentinfo" | One per page* |
 
 ### Landmark guidelines
-- Some can't be nested (see table above)
-- Some must be unique to the page (see table above)
+- A large image with text at the top of a page which is often called a “Hero banner” shouldn't use the banner role unless the same banner is used on every page of the site. A page &lt;header&gt; placed before the &lt;main&gt; or a div with role="banner" should contain site-wide content like the site's name, logo and navigation.
+- Some landmarks must be unique to the page (see table above)
 - Don't override accessibility roles - in general use ARIA roles on &lt;div&gt;s since they have no existing accessibility role
-- No need to double up HTML and ARIA (for example, &lt;main role="main"&gt; unless you are supporting a specific browser and screen reader combination that doesn't support the landmarks you are using
+- No need to double up HTML and ARIA (for example, &lt;main role="main"&gt;) unless you are supporting a specific browser and screen reader combination that doesn't support the landmarks you are using (see demos below)
 - If you have multiple landmarks of the same type, add a unique label for each one (for example, &lt;nav aria-label="Main"&gt; and &lt;nav aria-label="Education section"&gt;
+- Limit use of role="region" to content with a purpose that can't be described by any other landmark role
+
+* You can have more than one header or footer element on a page, but there should only be one banner and contentinfo landmark.
 
 ### Landmark demos
 
