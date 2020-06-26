@@ -172,7 +172,7 @@ The expected **screen reader** interaction for notifications is:
 I'm not a fan of toasts. I don't think they are the best option for notifications from a usability or accessibility perspective. If you must use toast, read [Adrian Roselli's strategies for toasts](https://adrianroselli.com/2020/01/defining-toast-messages.html#Strategies).
 
 ## Modals
-This code is adapted from [How To Make Modal Windows Better For Everyone](https://www.smashingmagazine.com/2014/09/making-modal-windows-better-for-everyone/). I've modified it by simplifying the CSS.
+This code is adapted from [How To Make Modal Windows Better For Everyone](https://www.smashingmagazine.com/2014/09/making-modal-windows-better-for-everyone/). I've modified it by simplifying the CSS. There's also a newer [article on modals by Scott O'Hara](https://developer.paciellogroup.com/blog/2018/06/the-current-state-of-modal-dialog-accessibility/) with updates on a native dialog element, aria-modal, aria-haspopup and inert, if you want to do a deeper dive.
 
 [Shepherd](https://shepherdjs.dev/) is a JavaScript library that provides an accessible guided tour using modals.
 
