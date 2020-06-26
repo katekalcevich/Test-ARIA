@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html lang="EN">
   <!-- adapted from 
   https://www.w3.org/TR/wai-aria-practices/examples/landmarks/HTML5.html
-  https://accessibility.oit.ncsu.edu/it-accessibility-at-nc-state/developers/accessibility-handbook/aria-landmarks/
-  https://adrianroselli.com/2015/08/where-to-put-your-search-role.html
+  https://a11yproject.com/posts/aria-landmark-roles/
+  https://www.scottohara.me/blog/2018/03/03/landmarks.html
   -->
   
   <head>
@@ -12,10 +13,22 @@
   <body>
     <header role="banner">
       <nav aria-label="Main">Links go here</nav>
-      <!-- note that role search on a form element may throw a validator warning, 
-           but if you read the update on the "where to put your search role" article linked above, 
-           you'll see that it's allowed. -->
       <form role="search">Search goes here</form>
+      <figure>
+        <img src="https://github.com/katekalcevich/Test-ARIA/blob/master/html-and-aria.jpg?raw=true" width="500" alt="VoiceOver rotor landmarks" style="float: right" />
+        <figcaption>VoiceOver reads landmarks as:
+          <ul>
+            <li>banner</li>
+            <li>Main navigation</li>
+            <li>search</li>
+            <li>main</li>
+            <li>Quick links navigation</li>
+            <li>complementary</li>
+            <li>contentinfo</li>
+            <li>Footer navigation</li>
+          </ul>
+        </figcaption>
+      </figure>
     </header>
 
     <main>
