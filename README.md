@@ -19,6 +19,8 @@ Landmarks can help screen reader users to understand the layout of a web page. Y
 | &lt;form&gt; | role="form" |  |
 | &lt;footer&gt; | role="contentinfo" | One per page* |
 
+&ast; You can have more than one header or footer element on a page, but there should only be one banner and contentinfo landmark.
+
 ### Landmark guidelines
 - A large image with text at the top of a page which is often called a “Hero banner” shouldn't use the banner role unless the same banner is used on every page of the site. A page &lt;header&gt; placed before the &lt;main&gt; or a div with role="banner" should contain site-wide content like the site's name, logo and navigation.
 - Some landmarks must be unique to the page (see table above)
@@ -26,8 +28,6 @@ Landmarks can help screen reader users to understand the layout of a web page. Y
 - No need to double up HTML and ARIA (for example, &lt;main role="main"&gt;) unless you are supporting a specific browser and screen reader combination that doesn't support the landmarks you are using (see demos below)
 - If you have multiple landmarks of the same type, add a unique label for each one (for example, &lt;nav aria-label="Main"&gt; and &lt;nav aria-label="Education section"&gt;
 - Limit use of role="region" to content with a purpose that can't be described by any other landmark role
-
-&ast; You can have more than one header or footer element on a page, but there should only be one banner and contentinfo landmark.
 
 ### Landmark demos
 
