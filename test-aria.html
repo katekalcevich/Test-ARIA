@@ -679,12 +679,12 @@
     It's best practice to set the focus on the first error, to help users fix errors faster.
     -->
     <h2>Notifications</h2>
-    <div id="status" role="status" aria-live="polite"></div>
+    <div id="statusMsg" role="status" aria-live="polite"></div>
       
     <p>
-      <label for="name">Name</label> 
+      <label for="fullName">Name</label> 
       <br><span id="hint-name">First and last</span>
-      <br><input type="text" id="name" 
+      <br><input type="text" id="fullName" 
         autocomplete="name" 
         aria-required="true"
         aria-describedby="hint-name error-name">
@@ -701,7 +701,7 @@
     </p>
       
     <p>
-      <label id="label1" for="phone">Phone</label>
+      <label for="phone">Phone</label>
       <br><span id="hint-phone">Format: 999-999-9999</span>
       <br><input type="text" id="phone" 
         autocomplete="phone" 
@@ -721,10 +721,10 @@
       
       var formSubmit = document.getElementById("form-submit"),
           formCancel = document.getElementById("form-cancel"),
-          status = document.getElementById("status"),
+          statusMsg = document.getElementById("statusMsg"),
           errName = document.getElementById("error-name"),
           errPhone = document.getElementById("error-phone"),
-          name = document.getElementById("name"),
+          fullName = document.getElementById("fullName"),
           phone = document.getElementById("phone");
       
       formSubmit.addEventListener("click", showError, false);
@@ -732,12 +732,12 @@
       
       // show two errors on the page (this function demos error messaging only - it doesn't actually check for errors)
       function showError() {
-        status.innerHTML = "There are two errors on this page. Please fix them and resubmit the form.";
+        statusMsg.innerHTML = "There are two errors on this page. Please fix them and resubmit the form.";
         errName.innerHTML = "&nbsp;<strong>Error</strong>: Name is required";
         errPhone.innerHTML = "&nbsp;<strong>Error</strong>: Phone is required";
-        name.setAttribute("aria-invalid", "true");
+        fullName.setAttribute("aria-invalid", "true");
         phone.setAttribute("aria-invalid", "true");
-        name.focus();
+        fullName.focus();
       }
       
       // show alert (this demos the alert role - it doesn't have any other cancellation functionality like clearing form fields)
