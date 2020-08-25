@@ -679,7 +679,8 @@
     It's best practice to set the focus on the first error, to help users fix errors faster.
     -->
     <h2>Notifications</h2>
-    <div id="statusMsg" role="status" aria-live="polite"></div>
+    <div id="statusMsg" aria-live="polite"></div>
+    <!-- this is equivalent to the above line of code <div id="statusMsg" role="status"></div> -->
       
     <p>
       <label for="fullName">Name</label> 
@@ -716,6 +717,7 @@
     </p>
       
     <div id="alert" role="alert"></div>
+    <!-- this is equivalent to the above line of code <div id="alert" aria-live="assertive"></div>-->
     
     <script>
       
