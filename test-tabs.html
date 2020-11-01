@@ -1,0 +1,719 @@
+<html lang="en">
+  <head>
+    <title>Test Tabs</title>
+    <style>
+
+button {
+  font-size: 1em;
+}
+      
+h2 {
+  margin-top: 3em;
+}
+
+.tabList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 auto;
+}
+
+.tabList a {
+  display: block;
+  float: left;
+  border: 1px solid #000;
+  padding: .25em 2em;
+  margin: 0 0 -8px .25em;
+  border-radius: .5em .5em 0 0;
+  background-color: #aaa;
+}
+
+.tabList a:link, .tabList a:visited, .tabList a:hover, .tabList a:focus, .tabList a:active {
+  text-decoration: none;
+  color: #000;
+}
+
+.tabList a:hover, .tabList a:focus {
+  background-color: #ccc;
+}
+
+.tabList a.selected {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.tabPanels div {
+  clear: left;
+  margin: 0 auto;
+  padding: 1em 2em;
+  border-radius: .25em;
+  background-color: #fff;
+  display: none;
+}
+
+.tabPanels div.selected, div[aria-hidden=false] {
+  display: block;
+}
+
+.hide, div[aria-hidden=true] {
+  display: none;
+}
+
+
+body {
+  padding: 0 1rem;
+  font-size: 125%;
+  line-height: 1.5;
+  margin: 1.5rem auto;
+  font-family: Arial, sans-serif;
+}
+
+* {
+  margin: 0;
+}
+
+[role="tablist"] {
+  padding: 0;
+}
+
+[role="tablist"] li, [role="tablist"] a {
+  display: inline-block;
+}
+
+[role="tablist"] a {
+  text-decoration: none;
+  padding: 0.5rem 1em;
+}
+
+[role="tablist"] [aria-selected] {
+  border: 2px solid #000;
+  background: #fff;
+  border-bottom: 0;
+  position: relative;
+  top: 2px;
+}
+
+[role="tabpanel"] {
+  border: 2px solid;
+  padding: 1.5rem;
+}
+
+[role="tabpanel"] * + * {
+  margin-top: 0.75rem;
+}
+
+*:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 4px lightBlue;
+}
+
+@media (max-width: 550px) {
+  
+  [role="tablist"] li, [role="tablist"] a {
+    display: block;
+    position: static;
+  }
+  
+  [role="tablist"] a {
+    border: 2px solid #222 !important;
+  }
+  
+  [role="tablist"] li + li a {
+    border-top: 0 !important;
+  }
+  
+  [role="tablist"] [aria-selected] {
+    position: static;
+  }
+  
+  [role="tablist"] [aria-selected]::after {
+    content: '\0020⬅';
+  }
+  
+  [role="tabpanel"] {
+    border-top: 0;
+  }
+  
+}
+
+    </style>
+  </head>
+  
+  <body>
+    <h1>Test Tabs</h1>
+    
+    <!-- adapted from 
+    https://www.deque.com/blog/a11y-support-series-part-1-aria-tab-panel-accessibility/
+    Modified from WAI-ARIA recommendations to allow users to tab between tabs as some keyboard users would expect. In the ARIA specs, you should only be able to navigate by arrow keys. 
+    I've also set the focus to the selected tab panel so that a screen reader goes right to selected tab's panel content. 
+    Divs aren't normally focusable, but adding tabindex="-1" with JavaScript will move the focus to the panel content. 
+    -->
+    <h2>Fruit tabs</h2>
+ 
+    <div class="tabs">
+      
+      <div role="tablist">
+        <button type="button" role="tab" aria-selected="true" 
+            id="apples-tab" aria-controls="apples-panel" 
+            style="background: yellow">
+          Apples
+        </button>
+        <button type="button" role="tab" aria-selected="false" 
+            id="bananas-tab" aria-controls="bananas-panel">
+          Bananas
+        </button>
+        <button type="button" role="tab" aria-selected="false" 
+            id="peaches-tab" aria-controls="peaches-panel">
+          Peaches
+        </button>
+      </div>
+      
+      <div id="apples-panel" role="tabpanel" 
+           aria-labelledby="apples-tab">
+        <h3>Apples</h3>
+        <p>Apples are amazing!</p>
+        <a href="apple.html">How appealing</a>
+      </div>
+      <div id="bananas-panel" role="tabpanel" 
+           aria-labelledby="bananas-tab" style="display: none">
+        <h3>Bananas</h3>
+        <p>Don't slip on your banana peel!</p>
+        <a href="banana.html">Peel me</a>
+      </div>
+      <div id="peaches-panel" role="tabpanel" 
+           aria-labelledby="peaches-tab" style="display: none">
+        <h3>Peaches</h3>
+        <p>Peaches keep peaching!</p>
+        <a href="peach.html">Get peachy</a>
+      </div>
+      
+    </div><!-- .tabs -->
+    
+    <script>
+      var tabs = document.querySelectorAll("[role=tab]"),
+          tabList = document.querySelector("[role=tablist]"),
+          tabPanels = document.querySelectorAll("[role=tabpanel]"); 
+      
+      for (i = 0; i < tabs.length; i++) {
+        tabs[i].addEventListener("click", showTabPanel);
+      }
+      
+      function showTabPanel() { 
+        var target = event.target;
+        
+        // close any open tabs and reset tab button
+        for (i = 0; i < tabPanels.length; i++) {
+            tabPanels[i].style.display = "none";
+            tabPanels[i].removeAttribute("tabindex");
+        }
+
+        for (i = 0; i < tabs.length; i++) {
+          tabs[i].setAttribute("aria-selected", "false");
+          tabs[i].setAttribute("style", "background: default");
+        }
+        
+        // find panel to open through the aria-controls of the clicked tab button
+        var tabPanelToOpen = document.getElementById(
+          target.getAttribute("aria-controls")
+        );
+        
+        // open selected tab and set focus on content so user bypasses other tabs
+        tabPanelToOpen.style.display = "block";
+        tabPanelToOpen.setAttribute("tabindex", -1);
+        tabPanelToOpen.focus();
+        
+        // highlight open tab button and update aria
+        target.setAttribute("aria-selected", "true");
+        target.setAttribute("style", "background: yellow");
+      }
+      
+      // add ability to navigate tabs using arrow keys
+      tabList.addEventListener("keydown", e => {
+        
+        if (e.keyCode === 39 || e.keyCode === 37) {
+          var selected = document.activeElement;
+          
+          // move right on right arrow
+          if (e.keyCode === 39) {
+            if (selected.nextElementSibling) {
+              selected.nextElementSibling.click();
+              selected.nextElementSibling.focus();
+            }
+            
+          // move left on left arrow
+          } else if (e.keyCode === 37) {
+            if (selected.previousElementSibling) {
+              selected.previousElementSibling.click();
+              selected.previousElementSibling.focus();
+            }
+          }
+          
+        }
+        
+      });
+    </script>
+      
+    <h2>Cake tabs</h2>
+    <!--
+    Using HTML from <a href="http://www.marcozehe.de/2013/02/02/advanced-aria-tip-1-tabs-in-web-apps/">Advanced ARIA tip #1: Tabs in web apps</a>, slightly tweaked, and my own CSS and JavaScript. -->
+
+  <ul class="tabList" id="tabs" role="tablist">
+    <li role="presentation"><a id="tab1" href="#panel1" onclick="showTab(1);return false;" role="tab" aria-controls="panel1" aria-selected="false">Apple Bundt Cake</a></li>
+    <li role="presentation"><a id="tab2" href="#panel2" onclick="showTab(2);return false;" role="tab" aria-controls="panel2" aria-selected="false">Cinnamon and Amaretto Pound Cake</a></li>
+    <li role="presentation"><a id="tab3" href="#panel3" onclick="showTab(3);return false;" role="tab" aria-controls="panel3" aria-selected="false">Chocolate Caramel Cheesecake</a></li>
+  </ul>
+
+  <div class="tabPanels">
+    <div id="panel1" role="tabpanel" aria-labelledby="tab1">
+    <p>
+      "This is a delicious cake," says ARLPORT. "I substituted rum for the orange juice and next time I would use more apples — maybe three cups instead so you get apple in every nibble."&nbsp; We’re always in favor of more booze and more fall apples. <a href="https://www.allrecipes.com/recipe/7620/apple-bundt-cake/">View apple cake recipe</a>
+    </p>
+    </div>
+
+    <div id="panel2" role="tabpanel" aria-labelledby="tab2">
+    <p>
+      Do not judge a recipe by it’s lack of reviews! The Gourmet Housewife says, "I hesitated to make this because there hadn't been any reviews on it yet, but I'm so happy I did. Fantastic recipe — it's getting added to my regular rotation." <a href="https://www.allrecipes.com/recipe/268787/cinnamon-and-amaretto-pound-cake/">View cinnamon cake recipe</a>
+    </p>
+    </div>
+
+    <div id="panel3" role="tabpanel" aria-labelledby="tab3">
+      <p>
+        Get a good dose of chocolate in your fall cake! "This was excellent — everyone loved it," says dgessner. And we love this idea for something a bit different: "Instead of having all chocolate I swirled it in for a mix of vanilla and chocolate." <a href="https://www.allrecipes.com/recipe/25986/chocolate-caramel-cheesecake/">View cheesecake recipe</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    var OpenTab;
+
+function showTab(num) {
+  try{
+      if(OpenTab!=undefined){
+        var OldTabID = document.getElementById('tab'+OpenTab);
+        var OldPanelID = document.getElementById('panel'+OpenTab);
+        OldTabID.className = '';
+        OldPanelID.className = 'hide';
+        OldTabID.setAttribute('aria-selected', false);
+        OldPanelID.setAttribute('aria-hidden', true);
+      }
+      var TabID = document.getElementById('tab'+num);
+      var PanelID = document.getElementById('panel'+num);
+      TabID.className = 'selected';
+      PanelID.className = 'selected';
+      TabID.setAttribute('aria-selected', true);
+      PanelID.setAttribute('aria-hidden', false);
+      OpenTab = num;
+  }catch(e){}
+}
+
+showTab(1);
+    showTab(1);
+  </script>
+
+  <h2>Dog tabs</h2>
+  <!-- Heydon Pickering Inclusive Components -->
+
+<div class="tabbed">
+  <ul>
+    <li>
+      <a href="#section1">American Eskimo Dog</a>
+    </li>
+    <li>
+      <a href="#section2">Australian Cattle Dog</a>
+    </li>
+    <li>
+       <a href="#section3">Beagle</a>
+    </li>
+  </ul>
+  <section id="section1">
+    <h3>American Eskimo Dog</h3>
+    <p>Called “the dog beautiful” by admirers, the American Eskimo Dog, or “Eskie,” is a striking canine with their white coat, sweet expression, and black eyes. They’re a Nordic <a href="https://dogtime.com/dog-breeds">dog breed</a>, a member of the Spitz family.</p>
+  </section>
+  <section id="section2">
+    <h3>Australian Cattle Dog</h3>
+    <p>The Australian Cattle Dog is an extremely intelligent, active, and sturdy <a href="https://dogtime.com/dog-breeds">dog breed</a>. Developed by Australian settlers to handle herds of cattle on expansive ranches, they’re still used today as a herding dog. They thrive on having a job to do and on being part of all family activities.</p>
+  </section>
+  <section id="section3">
+    <h3>Beagle</h3>
+    <p>Small, compact, and hardy, Beagles are active companions for kids and adults alike. Canines of this <a href="https://dogtime.com/dog-breeds">dog breed</a> are merry and fun loving, but being hounds, they can also be stubborn and require patient, creative training techniques.</p>
+  </section>
+</div>
+
+<script>
+  (function() {
+  // Get relevant elements and collections
+  const tabbed = document.querySelector('.tabbed');
+  const tablist = tabbed.querySelector('ul');
+  const tabs = tablist.querySelectorAll('a');
+  const panels = tabbed.querySelectorAll('[id^="section"]');
+  
+  // The tab switching function
+  const switchTab = (oldTab, newTab) => {
+    newTab.focus();
+    // Make the active tab focusable by the user (Tab key)
+    newTab.removeAttribute('tabindex');
+    // Set the selected state
+    newTab.setAttribute('aria-selected', 'true');
+    oldTab.removeAttribute('aria-selected');
+    oldTab.setAttribute('tabindex', '-1');
+    // Get the indices of the new and old tabs to find the correct
+    // tab panels to show and hide
+    let index = Array.prototype.indexOf.call(tabs, newTab);
+    let oldIndex = Array.prototype.indexOf.call(tabs, oldTab);
+    panels[oldIndex].hidden = true;
+    panels[index].hidden = false;
+  }
+  
+  // Add the tablist role to the first <ul> in the .tabbed container
+  tablist.setAttribute('role', 'tablist');
+  
+  // Add semantics are remove user focusability for each tab
+  Array.prototype.forEach.call(tabs, (tab, i) => {
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('id', 'tab' + (i + 1));
+    tab.setAttribute('tabindex', '-1');
+    tab.parentNode.setAttribute('role', 'presentation');
+    
+    // Handle clicking of tabs for mouse users
+    tab.addEventListener('click', e => {
+      e.preventDefault();
+      let currentTab = tablist.querySelector('[aria-selected]');
+      if (e.currentTarget !== currentTab) {
+        switchTab(currentTab, e.currentTarget);
+      }
+    });
+    
+    // Handle keydown events for keyboard users
+    tab.addEventListener('keydown', e => {
+      // Get the index of the current tab in the tabs node list
+      let index = Array.prototype.indexOf.call(tabs, e.currentTarget);
+      // Work out which key the user is pressing and
+      // Calculate the new tab's index where appropriate
+      let dir = e.which === 37 ? index - 1 : e.which === 39 ? index + 1 : e.which === 40 ? 'down' : null;
+      if (dir !== null) {
+        e.preventDefault();
+        // If the down key is pressed, move focus to the open panel,
+        // otherwise switch to the adjacent tab
+        dir === 'down' ? panels[i].focus() : tabs[dir] ? switchTab(e.currentTarget, tabs[dir]) : void 0;
+      }
+    });
+  });
+  
+  // Add tab panel semantics and hide them all
+  Array.prototype.forEach.call(panels, (panel, i) => {
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('tabindex', '-1');
+    let id = panel.getAttribute('id');
+    panel.setAttribute('aria-labelledby', tabs[i].id);
+    panel.hidden = true; 
+  });
+  
+  // Initially activate the first tab and reveal the first tab panel
+  tabs[0].removeAttribute('tabindex');
+  tabs[0].setAttribute('aria-selected', 'true');
+  panels[0].hidden = false;
+})();
+</script>
+
+<h2>Musician tabs</h2>
+
+<div class="tabs" id="w3c">
+  <div role="tablist" aria-label="Musicians">
+    <button role="tab"
+            aria-selected="true"
+            aria-controls="nils-tab"
+            id="nils">
+      Nils Frahm
+    </button>
+    <button role="tab"
+            aria-selected="false"
+            aria-controls="agnes-tab"
+            id="agnes"
+            tabindex="-1">
+      Agnes Obel
+    </button>
+    <button role="tab"
+            aria-selected="false"
+            aria-controls="jann-tab"
+            id="complex"
+            tabindex="-1"
+            data-deletable="">
+      Jann Arden
+    </button>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="nils-tab"
+       aria-labelledby="nils">
+    <p>
+      Nils Frahm is a German <a href="https://www.merriam-webster.com/dictionary/musician">musician</a>, composer and record producer based in Berlin. He is known for combining classical and electronic music and for an unconventional approach to the piano in which he mixes a grand piano, upright piano, Roland Juno-60, Rhodes piano, drum machine, and Moog Taurus.
+    </p>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="agnes-tab"
+       aria-labelledby="agnes"
+       hidden="">
+    <p>
+      Agnes Caroline Thaarup Obel is a Danish <a href="https://en.wikipedia.org/wiki/Singer-songwriter">singer/songwriter</a>. Her first album, Philharmonics, was released by PIAS Recordings on 4 October 2010 in Europe. Philharmonics was certified gold in June 2011 by the Belgian Entertainment Association (BEA) for sales of 10,000 Copies.
+    </p>
+  </div>
+  <div tabindex="0"
+       role="tabpanel"
+       id="jann-tab"
+       aria-labelledby="jann"
+       hidden="">
+    <p>
+      Jann Arden is a Canadian <a href="https://en.wikipedia.org/wiki/Singer-songwriter">singer/songwriter</a> and actress. She is famous for her signature ballads, "Could I Be Your Girl" and "Insensitive", which is her biggest hit to date.
+    </p>
+  </div>
+</div>
+
+<script>
+/*
+*   This content is licensed according to the W3C Software License at
+*   https://www.w3.org/Consortium/Legal/2015/copyright-software-and-document
+*/
+(function () {
+  var container = document.querySelector("#w3c");
+  var tablist = container.querySelectorAll('[role="tablist"]')[0];
+  var tabs;
+  var panels;
+
+  generateArrays();
+
+  function generateArrays () {
+    tabs = container.querySelectorAll('[role="tab"]');
+    panels = container.querySelectorAll('[role="tabpanel"]');
+  };
+
+  // For easy reference
+  var keys = {
+    end: 35,
+    home: 36,
+    left: 37,
+    up: 38,
+    right: 39,
+    down: 40,
+    delete: 46,
+    enter: 13,
+    space: 32
+  };
+
+  // Add or subtract depending on key pressed
+  var direction = {
+    37: -1,
+    38: -1,
+    39: 1,
+    40: 1
+  };
+
+  // Bind listeners
+  for (i = 0; i < tabs.length; ++i) {
+    addListeners(i);
+  };
+
+  function addListeners (index) {
+    tabs[index].addEventListener('click', clickEventListener);
+    tabs[index].addEventListener('keydown', keydownEventListener);
+    tabs[index].addEventListener('keyup', keyupEventListener);
+
+    // Build an array with all tabs (<button>s) in it
+    tabs[index].index = index;
+  };
+
+  // When a tab is clicked, activateTab is fired to activate it
+  function clickEventListener (event) {
+    var tab = event.target;
+    activateTab(tab, false);
+  };
+
+  // Handle keydown on tabs
+  function keydownEventListener (event) {
+    var key = event.keyCode;
+
+    switch (key) {
+      case keys.end:
+        event.preventDefault();
+        // Activate last tab
+        focusLastTab();
+        break;
+      case keys.home:
+        event.preventDefault();
+        // Activate first tab
+        focusFirstTab();
+        break;
+
+      // Up and down are in keydown
+      // because we need to prevent page scroll >:)
+      case keys.up:
+      case keys.down:
+        determineOrientation(event);
+        break;
+    };
+  };
+
+  // Handle keyup on tabs
+  function keyupEventListener (event) {
+    var key = event.keyCode;
+
+    switch (key) {
+      case keys.left:
+      case keys.right:
+        determineOrientation(event);
+        break;
+      case keys.delete:
+        determineDeletable(event);
+        break;
+      case keys.enter:
+      case keys.space:
+        activateTab(event.target);
+        break;
+    };
+  };
+
+  // When a tablistâ€™s aria-orientation is set to vertical,
+  // only up and down arrow should function.
+  // In all other cases only left and right arrow function.
+  function determineOrientation (event) {
+    var key = event.keyCode;
+    var vertical = tablist.getAttribute('aria-orientation') == 'vertical';
+    var proceed = false;
+
+    if (vertical) {
+      if (key === keys.up || key === keys.down) {
+        event.preventDefault();
+        proceed = true;
+      };
+    }
+    else {
+      if (key === keys.left || key === keys.right) {
+        proceed = true;
+      };
+    };
+
+    if (proceed) {
+      switchTabOnArrowPress(event);
+    };
+  };
+
+  // Either focus the next, previous, first, or last tab
+  // depending on key pressed
+  function switchTabOnArrowPress (event) {
+    var pressed = event.keyCode;
+
+    if (direction[pressed]) {
+      var target = event.target;
+      if (target.index !== undefined) {
+        if (tabs[target.index + direction[pressed]]) {
+          tabs[target.index + direction[pressed]].focus();
+        }
+        else if (pressed === keys.left || pressed === keys.up) {
+          focusLastTab();
+        }
+        else if (pressed === keys.right || pressed == keys.down) {
+          focusFirstTab();
+        };
+      };
+    };
+  };
+
+  // Activates any given tab panel
+  function activateTab (tab, setFocus) {
+    setFocus = setFocus || true;
+    // Deactivate all other tabs
+    deactivateTabs();
+
+    // Remove tabindex attribute
+    tab.removeAttribute('tabindex');
+
+    // Set the tab as selected
+    tab.setAttribute('aria-selected', 'true');
+
+    // Get the value of aria-controls (which is an ID)
+    var controls = tab.getAttribute('aria-controls');
+
+    // Remove hidden attribute from tab panel to make it visible
+    document.getElementById(controls).removeAttribute('hidden');
+
+    // Set focus when required
+    if (setFocus) {
+      tab.focus();
+    };
+  };
+
+  // Deactivate all tabs and tab panels
+  function deactivateTabs () {
+    for (t = 0; t < tabs.length; t++) {
+      tabs[t].setAttribute('tabindex', '-1');
+      tabs[t].setAttribute('aria-selected', 'false');
+    };
+
+    for (p = 0; p < panels.length; p++) {
+      panels[p].setAttribute('hidden', 'hidden');
+    };
+  };
+
+  // Make a guess
+  function focusFirstTab () {
+    tabs[0].focus();
+  };
+
+  // Make a guess
+  function focusLastTab () {
+    tabs[tabs.length - 1].focus();
+  };
+
+  // Detect if a tab is deletable
+  function determineDeletable (event) {
+    target = event.target;
+
+    if (target.getAttribute('data-deletable') !== null) {
+      // Delete target tab
+      deleteTab(event, target);
+
+      // Update arrays related to tabs widget
+      generateArrays();
+
+      // Activate the closest tab to the one that was just deleted
+      if (target.index - 1 < 0) {
+        activateTab(tabs[0]);
+      }
+      else {
+        activateTab(tabs[target.index - 1]);
+      };
+    };
+  };
+
+  // Deletes a tab and its panel
+  function deleteTab (event) {
+    var target = event.target;
+    var panel = document.getElementById(target.getAttribute('aria-controls'));
+
+    target.parentElement.removeChild(target);
+    panel.parentElement.removeChild(panel);
+  };
+
+  // Determine whether there should be a delay
+  // when user navigates with the arrow keys
+  function determineDelay () {
+    var hasDelay = tablist.hasAttribute('data-delay');
+    var delay = 0;
+
+    if (hasDelay) {
+      var delayValue = tablist.getAttribute('data-delay');
+      if (delayValue) {
+        delay = delayValue;
+      }
+      else {
+        // If no value is specified, default to 300ms
+        delay = 300;
+      };
+    };
+
+    return delay;
+  };
+}());
+</script>
+
+  </body>
+</html>
