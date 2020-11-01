@@ -173,6 +173,19 @@ The expected **screen reader** interaction for notifications is:
 
 I'm not a fan of toasts. I don't think they are the best option for notifications from a usability or accessibility perspective. If you must use toast, read [Adrian Roselli's strategies for toasts](https://adrianroselli.com/2020/01/defining-toast-messages.html#Strategies).
 
+## Carousel
+This code is adapted from [Vanilla Accessibility's carousel](https://van11y.net/accessible-carrousel/). I've replaced the dots that navigate all the slides with captions and the current slide number and total slides. I increased the contrast of the previous and next arrows and added a title overlay. I left the JS minified and didn't touch any of it.
+
+The expected **keyboard** interaction for carousels is:
+- previous and next navigation are in a logical tab order
+- you can go to the previous or next content region using the enter key or spacebar
+
+The expected **screen reader** interaction for carousel is:
+- previouse and next navigation is labelled
+- semantically structured content and alt text on images
+- teads a description of the carousel and each content region
+- reads the total number of content regions and the current content region
+
 ## Modals
 This code is adapted from [How To Make Modal Windows Better For Everyone](https://www.smashingmagazine.com/2014/09/making-modal-windows-better-for-everyone/). I've modified it by simplifying the CSS. There's also a newer [article on modals by Scott O'Hara](https://developer.paciellogroup.com/blog/2018/06/the-current-state-of-modal-dialog-accessibility/) with updates on a native dialog element, aria-modal, aria-haspopup and inert, if you want to do a deeper dive.
 
