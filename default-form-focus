@@ -1,0 +1,80 @@
+<html lang="en">
+  <head>
+    <title>Default form focus</title>
+    <style>
+      /* for browsers that don't support hidden attribute */
+      [hidden] {
+        display: none;
+      }
+      
+      /* make demo content easier to see */
+      body, input, button {
+        font-family: arial, sans-serif;
+        font-size: 1em;
+      }
+      
+      label {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div id="page">
+    <h1>Default form focus</h1>
+      
+
+    <hr>
+    <!-- adapted from
+    https://www.w3.org/WAI/tutorials/forms/
+    -->
+    <h2>Keyboard support</h2>
+      
+    <form>
+      <p>
+        <label for="emailaddr">Email:</label>
+        <input type="text" name="emailaddr" id="emailaddr" autocomplete="email">
+      </p>
+
+      <p>
+        <input type="checkbox" name="subscribe" id="subscribe">
+        <label for="subscribe">Subscribe to newsletter</label>
+      </p>
+      
+      <p>
+        <fieldset>
+        <legend>Newsletter format</legend>
+          <div>
+            <input type="radio" name="format" id="txt" value="txt" checked>
+            <label for="txt">Plain text</label>
+          </div>
+          <div>
+            <input type="radio" name="format" id="web" value="web">
+            <label for="web">Web page</label>
+          </div>
+        </fieldset>
+      </p>
+      
+      <p>
+        <fieldset>
+        <legend>I want to receive</legend>
+          <input type="checkbox" name="newsletter" id="check_1"> <label for="check_1">The weekly newsletter</label><br>
+          <input type="checkbox" name="company_offers" id="check_2"> <label for="check_2">Offers from the company</label><br>
+          <input type="checkbox" name="assoc_offers" id="check_3"> <label for="check_3">Offers from associated companies</label>
+        </fieldset>
+      </p>
+      
+      <p>
+        <label for="frequency">Frequency</label><br>
+        <select id="frequency">
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+        </select>
+      </p>
+      
+      <input type="submit" value="Subscribe">
+    </form>
+      
+  </body>
+</html>
