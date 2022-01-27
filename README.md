@@ -146,8 +146,6 @@ The expected **screen reader** interaction for tabs is:
 - if the group of tabs has a heading, the tablist uses aria-labelledby with the ID of the heading
 - tabs have a role="tab"
 - tabs use aria-controls with the ID of the element that has the tab content in it (Aria-controls isn't well supported by screen readers, but it's a useful hook for the JS that controls the tabs.)
-- when a tab is open, it's button has aria-expanded="true"
-- when a tab is closed, it's button has aria-expanded="false"
 - the content for each tab is inside an element (like a div) with role="tabpanel" and aria-labelledby with the ID of the tab that opens it
 - if the tabs are vertical, the element with role="tablist" also has aria-orientation="vertical" (horizontal is the default)
 
