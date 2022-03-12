@@ -27,7 +27,7 @@
     <!-- more details at 
     https://webaim.org/techniques/keyboard/tabindex
     -->
-    <h2>Tabindex</h2>
+    <h2 id="tabindex">Tabindex</h2>
     <a href="#heading">Jump to heading</a>
     <h3 id="heading" tabindex="-1">Heading with tabindex -1</h3>
     <h3 tabindex="0">Heading with tabindex 0</h3>
@@ -145,7 +145,7 @@
         position: relative; /* raise the link about the a:after pseudo-content */
       }
     </style>
-    <h2>Cards</h2>
+    <h2 id="cards">Cards</h2>
 
     <ul class="cards">
       <li>
@@ -220,7 +220,7 @@
       </ul>
     </nav>
 
-    <h2>Sliding sidebar navigation</h2>
+    <h2 id="sliding">Sliding sidebar navigation</h2>
     <button type="button" id="quick-button" aria-expanded="false">
       Quick links
     </button>
@@ -316,7 +316,7 @@
     
     Modified Canada Post code to change top-level link to a button. Reduced the number of links and removed closing x to simplify example. See modal demo for how to create a closing x. Replaced the show/hide function with the hidden attribute and CSS which allowed me to remove tabindex="-1" and the associated toggling.
     -->
-    <h2>Dropdown navigation</h2>
+    <h2 id="dropdown">Dropdown navigation</h2>
       
     <nav aria-label="Product navigation" id="product-nav">
       <ul>
@@ -445,7 +445,7 @@
     Note that aria-expanded is on the accordion heading/button, 
     not the content panel. Putting it on the panel is a common error. 
     -->
-    <h2>Accordion</h2>
+    <h2 id="accordion">Accordion</h2>
     
     <div class="accordion">
       <h3>
@@ -519,7 +519,7 @@
     I've also set the focus to the selected tab panel so that a screen reader goes right to selected tab's panel content. 
     Divs aren't normally focusable, but adding tabindex="-1" with JavaScript will move the focus to the panel content. 
     -->
-    <h2>Tabs</h2>
+    <h2 id="tabs">Tabs</h2>
  
     <div class="tabs">
       
@@ -633,7 +633,7 @@
     If a form has multiple errors, it's helpful to notify the user how many errors there are, but it's not required for accessibility compliance.
     It's best practice to set the focus on the first error, to help users fix errors faster.
     -->
-    <h2>Notifications</h2>
+    <h2 id="notifications">Notifications</h2>
     <div id="statusMsg" aria-live="polite"></div>
     <!-- this is equivalent to the above line of code <div id="statusMsg" role="status"></div> -->
       
@@ -819,7 +819,7 @@
           100% { opacity: 1; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; }
       }
     </style>
-    <h2>Carousel</h2>
+    <h2 id="carousel">Carousel</h2>
 
         <div class="js-carrousel relative" style="width: 800px">
           <h2 class="carrousel">Customer photos</h2>
@@ -932,7 +932,7 @@
         top: .25em;
       }
     </style>
-    <h2>Modal dialog</h2>
+    <h2 id="modal">Modal dialog</h2>
 
     <p>
       <button type="button" id="modal-open">Sign in modal</button>
