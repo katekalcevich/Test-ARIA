@@ -179,7 +179,7 @@ The expected **keyboard** interaction for carousels is:
 - you can go to the previous or next content region using the enter key or spacebar
 
 The expected **screen reader** interaction for carousel is:
-- previouse and next navigation is labelled
+- previous and next navigation is labelled
 - semantically structured content and alt text on images
 - teads a description of the carousel and each content region
 - reads the total number of content regions and the current content region
