@@ -176,13 +176,13 @@ This code is adapted from [Vanilla Accessibility's carousel](https://van11y.net/
 
 The expected **keyboard** interaction for carousels is:
 - previous and next navigation are in a logical tab order
-- you can go to the previous or next content region using the enter key or spacebar
+- you can go to the previous or next slide using the enter key or spacebar
 
 The expected **screen reader** interaction for carousel is:
 - previous and next navigation is labelled
-- semantically structured content and alt text on images
-- teads a description of the carousel and each content region
-- reads the total number of content regions and the current content region
+- images have alt text
+- a description of the carousel and each slide is available
+- reads the total number of slides and the slide title
 
 ## Modals
 This code is adapted from [How To Make Modal Windows Better For Everyone](https://www.smashingmagazine.com/2014/09/making-modal-windows-better-for-everyone/). I've modified it by simplifying the CSS. There's also a newer [article on modals by Scott O'Hara](https://developer.paciellogroup.com/blog/2018/06/the-current-state-of-modal-dialog-accessibility/) with updates on a native dialog element, aria-modal, aria-haspopup and inert, if you want to do a deeper dive.
