@@ -1,5 +1,5 @@
 # Testing ARIA
- Accessible components using ARIA. 
+Accessible components using ARIA. Since publishing this guide, W3C has overhauled their [ARIA design patterns](https://www.w3.org/WAI/ARIA/apg/patterns/). Many of the examples below pull from their original guidance and their new guidance includes some elements that aren't included in my repository. Neither resource includes an [accessible date picker](https://github.com/duetds/date-picker) so I've linked to the one by Duet. If you are using a custom select component in order to get styling you didn't think was possible with native <select>, check out Scott's [styled select demo](https://scottaohara.github.io/a11y_styled_form_controls/src/select/).
 
 The file [test-aria.html](https://katekalcevich.github.io/Test-ARIA/test-aria.html) has code for accessible cards, navigation, accordions, tabs, notifications and modals written in HTML and JavaScript. A bare minimum of CSS is used to show functionality. There's also a tabindex and forms demo for keyboard and screen reader testing. The code is commented and I've also written notes below on expected behaviour and ARIA usage.
 
